@@ -5,12 +5,33 @@ local textModule = {} -- Here we store all the functions
 local textList = {} -- Here we store all the new buttons
 
 
-function textModule:new(x, y, text) -- Put this in love.load()
+function textModule:new(x, y, text, font) -- Put this in love.load()
 	newText = {}
 	
 	newText.x = x
 	newText.y = y
 	newText.text = text
+	newText.font = font
+	newText.color = {0.56, 0.56, 0.56, 1}
+	
+	
+	function newText:setText(text)
+		self.text = text
+	end
+	
+	function newText:setXY(x, y)
+		self.x = x
+		self.y = y
+	end
+	
+	function newText:setFont(font)
+		self.font = font
+	end
+	
+	function newText:setColor(color)
+		self.color = color
+	end
+	
 
 	table.insert(textList, newText)
 	
@@ -31,7 +52,7 @@ function textModule:draw() -- Put this in love.draw()
 
 	for i,textElement in ipairs(textList) do
 		-- Headline
-		love.graphics.setFont(settings.headlineFont)
+		love.graphics.setFont(textElement.font)
 		
 		fontHeight = love.graphics:getFont():getHeight()
 		fontWidth = love.graphics:getFont():getWidth(textElement.text)
@@ -43,7 +64,7 @@ function textModule:draw() -- Put this in love.draw()
 			textElement.y * settings.windowScale - 1 * settings.windowScale
 		)
 		
-		love.graphics.setColor(0.56, 0.56, 0.56, 1)
+		love.graphics.setColor(textElement.color)
 		love.graphics.print(
 			textElement.text,
 			textElement.x * settings.windowScale ,

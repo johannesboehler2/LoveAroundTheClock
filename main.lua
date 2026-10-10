@@ -65,6 +65,21 @@ function love.load()
 	settings.showClock = false
 	
 	
+	settings.smallFontFamily = "RobotoCondensed-Light.ttf"
+	settings.smallFontSize = 23 * settings.windowScale
+	settings.smallFont = love.graphics.newFont(
+		settings.smallFontFamily,
+		settings.smallFontSize
+	)
+	
+	settings.compassFontFamily = "RobotoCondensed-Light.ttf"
+	settings.compassFontSize = 43 * settings.windowScale
+	settings.compassFont = love.graphics.newFont(
+		settings.compassFontFamily,
+		settings.compassFontSize
+	)
+	
+	
 	love.window.setMode(
 		settings.windowWidth * settings.windowScale,
 		settings.windowHeight * settings.windowScale,
@@ -122,37 +137,46 @@ function love.load()
 	-- love.graphics.setLineStyle("smooth")
 	
 	
-    MenuButton = {button:new(
-        settings.windowWidth * settings.windowScale - 68 * settings.windowScale, -- X
-        8 * settings.windowScale, -- Y
-        0.5 * settings.windowScale, -- Scale (the image has double size)
-        love.graphics.newImage("menu_button_normal.png"),
-        love.graphics.newImage("menu_button_hover.png"),
-        function() -- Button's function
-            --print("Hello")
-        end,
-        function() -- Button's function
-            --print("Hover")
-        end)
-    }
+	MenuButton = button:new(
+		settings.windowWidth * settings.windowScale - 68 * settings.windowScale, -- X
+		48 * settings.windowScale, -- Y
+		0.5 * settings.windowScale, -- Scale (the image has double size)
+		love.graphics.newImage("menu_button_normal.png"),
+		love.graphics.newImage("menu_button_hover.png"),
+		function() -- Button's function
+		    --print("Hello")
+		end,
+		function() -- Button's function
+		    --print("Hover")
+		end
+	)
     
-    if settings.showHeadline then
-        text001 = text:new(9, 6, settings.headlineText)
-        text001.text = "Clock"
-    end
     
-    if settings.showCompass then
-        compass001 = compass:new(
-            10, -- TODO
-            10, -- TODO
-            love.graphics.newImage("compass_background.png"),
-            love.graphics.newImage("compass.png")
-        )
-    end
+	if settings.showHeadline then
+		headlineTextWidget = text:new(9, 6, settings.headlineText, settings.headlineFont)
+		headlineTextWidget.text = "Clock"
+	end
+    
+	geoTextWidget = text:new(190, 6, settings.headlineText, settings.headlineFont)
+	geoTextWidget:setText("47,50° N\n9,73° O")
+	geoTextWidget:setXY(10, 518)
+	geoTextWidget:setFont(settings.smallFont)
+	geoTextWidget:setColor({0.76, 0.76, 0.76, 1})
+    
+    
+	if settings.showCompass then
+		compassWidget = compass:new(
+			windowWidth / 2,
+			windowHeight / 2,
+			love.graphics.newImage("compass_background.png"),
+			love.graphics.newImage("compass.png"),
+			settings.windowScale
+		)
+	end
 
     
-    backgroundImage = love.graphics.newImage("background.png")
-    clockBackground = love.graphics.newImage("clock_background.png")
+	backgroundImage = love.graphics.newImage("background.png")
+	clockBackground = love.graphics.newImage("clock_background.png")
 end
 
 function love.update(dt)
@@ -169,11 +193,21 @@ function love.update(dt)
 		love.event.quit()
 	end
 	
-	if love.keyboard.isDown("f1") then
-		if settings.showFPS then
-			settings.showFPS = false
-		else
-			settings.showFPS = true
+	function love.keypressed(key, scancode, isrepeat)
+		if key == "f1" and isrepeat == false then
+			if settings.showFPS then
+				settings.showFPS = false
+			else
+				settings.showFPS = true
+			end
+		end
+
+		if key == "f2" and isrepeat == false then
+			if settings.showClock then
+				settings.showClock = false
+			else
+				settings.showClock = true
+			end
 		end
 	end
 	
@@ -187,7 +221,7 @@ function love.update(dt)
 	
 	button:update(dt)
 	text:update(dt)
-    compass:update(dt)
+   	compass:update(dt)
 
 end
 

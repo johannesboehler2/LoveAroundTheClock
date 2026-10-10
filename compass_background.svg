@@ -26,9 +26,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     inkscape:zoom="0.43024095"
-     inkscape:cx="366.07394"
-     inkscape:cy="393.96529"
+     inkscape:zoom="0.8604819"
+     inkscape:cx="366.65501"
+     inkscape:cy="222.54971"
      inkscape:window-width="1920"
      inkscape:window-height="936"
      inkscape:window-x="0"
@@ -53,12 +53,12 @@
        style="color-interpolation-filters:sRGB"
        inkscape:label="Blur"
        id="filter1"
-       x="-0.017135664"
-       y="-0.017135664"
-       width="1.0342713"
-       height="1.0342713">
+       x="-0.016993201"
+       y="-0.016993201"
+       width="1.0339864"
+       height="1.0339864">
       <feGaussianBlur
-         stdDeviation="1.9344259"
+         stdDeviation="1.9183434"
          result="blur"
          id="feGaussianBlur1" />
     </filter>
@@ -68,17 +68,17 @@
      inkscape:groupmode="layer"
      id="layer1">
     <circle
-       style="fill:#000000;fill-opacity:0.24;stroke:none;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:0.16;paint-order:stroke fill markers;filter:url(#filter1)"
+       style="fill:#000000;fill-opacity:0.33989123;stroke:none;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:0.16;paint-order:stroke fill markers;filter:url(#filter1)"
        id="path1-9"
        cx="140.10928"
        cy="140.10928"
        r="135.46666"
        transform="matrix(0.99885387,0,0,0.99921061,0.2835133,0.24572164)" />
     <ellipse
-       style="fill:#ffffff;fill-opacity:0.12;stroke:#ffffff;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:0.16;paint-order:stroke fill markers"
+       style="fill:#ffffff;fill-opacity:0.161675;stroke:#ffffff;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:0.16;paint-order:stroke fill markers"
        id="path1"
-       cx="140.89062"
-       cy="140.89062"
+       cx="140.22917"
+       cy="140.22916"
        rx="135.46667"
        ry="135.46666" />
     <path
