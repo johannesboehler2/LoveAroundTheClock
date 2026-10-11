@@ -8,12 +8,12 @@ screen = { w= love.graphics.getWidth(), h= love.graphics.getHeight()} -- This he
 
 local button_module = {} -- Here we store all the functions
 
-local buttons = {} -- Here we store all the new buttons
+local button_module.buttons = {} -- Here we store all the new buttons
 
 
 function button_module:new(x, y, scale, imgNormal, imgHover, funcClick, funcHover, text, textColor, textX, textY, center)
 	-- Put this in love.load()
-	newButton = {} -- We create a table and we create inside of it all the features we want for the button
+	local newButton = {} -- We create a table and we create inside of it all the features we want for the button
 	newButton.x = x
 	newButton.y = y
 	newButton.scale = scale
@@ -34,13 +34,13 @@ function button_module:new(x, y, scale, imgNormal, imgHover, funcClick, funcHove
 	newButton.hover = false
 	newButton.hoverOpacity = 0
 
-	table.insert(buttons, newButton)
+	table.insert(button_module.buttons, newButton)
 end
 
 
 
 function button_module:update(dt) -- Put this in love.update()
-	for i,v in ipairs(buttons) do
+	for i,v in ipairs(button_module.buttons) do
 		local x,y = love.mouse.getPosition()
 		local leftClick = love.mouse.isDown(1)
 		local rightClick = love.mouse.isDown(2)
@@ -75,7 +75,7 @@ end
 function button_module:draw() -- Put this in love.draw()
 	local r,g,b,a = love.graphics.getColor()
 
-	for i,v in ipairs(buttons) do
+	for i,v in ipairs(button_module.buttons) do
 		if v.center == true then -- if the center option is set on "true" then we center the button AND the text :D
 			--TODO: implement
 		else

@@ -5,14 +5,19 @@ local textModule = {} -- Here we store all the functions
 local textList = {} -- Here we store all the new buttons
 
 
-function textModule:new(x, y, text, font, scale) -- Put this in love.load()
+function textModule:new(x, y, text, fontFamily, fontSize, scale) -- Put this in love.load()
 	newText = {}
 	
 	newText.x = x
 	newText.y = y
 	newText.text = text
-	newText.font = font
+	newText.fontFamily = fontFamily
+	newText.fontSize = fontSize
 	newText.scale = scale
+	newText.font = love.graphics.newFont(
+		newText.fontFamily,
+		newText.fontSize * newText.scale
+	)
 	newText.color = {0.56, 0.56, 0.56, 1}
 	
 	
@@ -25,7 +30,7 @@ function textModule:new(x, y, text, font, scale) -- Put this in love.load()
 		self.y = y
 	end
 	
-	function newText:setFont(font)
+	function newText:setFont(font) -- TODO
 		self.font = font
 	end
 	

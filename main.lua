@@ -1,6 +1,7 @@
-button = require "button"
-compass = require "compass"
-text = require "text"
+button = require "modules/button"
+compass = require "modules/compass"
+text = require "modules/text"
+overlay = require "modules/overlay"
 
 
 local fps = 0;
@@ -41,7 +42,7 @@ function love.load()
 	settings.windowScale = 0.667
 	settings.windowScale = 1.4
 	--settings.windowScale = 1.85
-	settings.headlineFontFamily = "AvantGarde_LT_Medium.ttf"
+	settings.headlineFontFamily = "assets/fonts/GlacialIndifference-Regular.otf"
 	settings.headlineFontSize = 34 * settings.windowScale
 	settings.headlineFont = love.graphics.newFont(
 		settings.headlineFontFamily,
@@ -52,7 +53,7 @@ function love.load()
 	--	settings.hourNumbersFontSize
 	--)
 	
-	settings.hoursFontFamily = "AvantGarde_LT_Medium.ttf"
+	settings.hoursFontFamily = "assets/fonts/GlacialIndifference-Regular.otf"
 	settings.hourNumbersFontSize = 24 * settings.windowScale
 	settings.hourNumbersFont = love.graphics.newFont(
 		settings.hoursFontFamily,
@@ -73,14 +74,14 @@ function love.load()
 	settings.showClock = false
 	
 	
-	settings.smallFontFamily = "AvantGarde_LT_Medium.ttf"
-	settings.smallFontSize = 22 * settings.windowScale
+	settings.smallFontFamily = "assets/fonts/GlacialIndifference-Regular.otf"
+	settings.smallFontSize = 22
 	settings.smallFont = love.graphics.newFont(
 		settings.smallFontFamily,
 		settings.smallFontSize
 	)
 	
-	settings.compassFontFamily = "AvantGarde_LT_Medium.ttf"
+	settings.compassFontFamily = "assets/fonts/GlacialIndifference-Bold.otf"
 	settings.compassFontSize = 35
 	
 	
@@ -146,8 +147,8 @@ function love.load()
 		settings.windowWidth * settings.windowScale - 68 * settings.windowScale, -- X
 		48 * settings.windowScale, -- Y
 		0.5 * settings.windowScale, -- Scale (the image has double size)
-		love.graphics.newImage("menu_button_normal.png"),
-		love.graphics.newImage("menu_button_hover.png"),
+		love.graphics.newImage("assets/images/menu_button_normal_002.png"),
+		love.graphics.newImage("assets/images/menu_button_hover_002.png"),
 		function() -- Button's function
 		    --print("Hello")
 		end,
@@ -158,14 +159,14 @@ function love.load()
     
     
 	if settings.showHeadline then
-		headlineTextWidget = text:new(9, 6, settings.headlineText, settings.headlineFont)
+		headlineTextWidget = text:new(9, 6, settings.headlineText, settings.headlineFont,  settings.windowScale)
 		headlineTextWidget.text = "Clock"
 	end
     
-	geoTextWidget = text:new(190, 6, settings.headlineText, settings.headlineFont, settings.windowScale)
+	geoTextWidget = text:new(190, 6, settings.headlineText, settings.smallFontFamily, settings.smallFontSize, settings.windowScale)
 	geoTextWidget:setText("47,50° N\n9,73° O")
 	geoTextWidget:setXY(10, 518)
-	geoTextWidget:setFont(settings.smallFont)
+	--geoTextWidget:setFont(settings.smallFont)
 	geoTextWidget:setColor({0.76, 0.76, 0.76, 1})
     
     
@@ -173,8 +174,8 @@ function love.load()
 		compassWidget = compass:new(
 			windowWidth / 2,
 			windowHeight / 2,
-			love.graphics.newImage("compass_background.png"),
-			love.graphics.newImage("compass.png"),
+			love.graphics.newImage("assets/images/compass_background.png"),
+			love.graphics.newImage("assets/images/compass.png"),
 			settings.compassFontFamily,
 			settings.compassFontSize,
 			settings.windowScale
@@ -182,8 +183,11 @@ function love.load()
 	end
 
     
-	backgroundImage = love.graphics.newImage("background.png")
-	clockBackground = love.graphics.newImage("clock_background.png")
+	backgroundImage = love.graphics.newImage("assets/images/background.png")
+	clockBackground = love.graphics.newImage("assets/images/clock_background.png")
+	
+	
+	--overlayWidget = overlay:new()
 end
 
 function love.update(dt)
@@ -229,7 +233,7 @@ function love.update(dt)
 	button:update(dt)
 	text:update(dt)
    	compass:update(dt)
-
+	overlay:update(dt)
 end
 
 function love.draw()
@@ -510,12 +514,16 @@ function love.draw()
     end
     
     
+    
+    
+    
     	-- Gamepad
 	
 	if gamepad and settings.showGamepad then
 		drawGamepad()
 	end
- 	
+	
+	overlay:draw()
  	
 end
 
