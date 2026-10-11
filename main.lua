@@ -41,16 +41,24 @@ function love.load()
 	settings.windowScale = 0.667
 	settings.windowScale = 1.4
 	--settings.windowScale = 1.85
-	settings.headlineFontFamily = "RobotoCondensed-Light.ttf"
+	settings.headlineFontFamily = "AvantGarde_LT_Medium.ttf"
 	settings.headlineFontSize = 34 * settings.windowScale
 	settings.headlineFont = love.graphics.newFont(
 		settings.headlineFontFamily,
 		settings.headlineFontSize
 	)
+	--settings.hourNumbersFontSize = 24 * settings.windowScale
+	--settings.hourNumbersFont = love.graphics.newFont(
+	--	settings.hourNumbersFontSize
+	--)
+	
+	settings.hoursFontFamily = "AvantGarde_LT_Medium.ttf"
 	settings.hourNumbersFontSize = 24 * settings.windowScale
 	settings.hourNumbersFont = love.graphics.newFont(
+		settings.hoursFontFamily,
 		settings.hourNumbersFontSize
 	)
+	
 	settings.headlineText = "Löve around the clock"
 	settings.backgroundColor = {0.2, 0.2, 0.2}
 	settings.borderless = false
@@ -65,19 +73,16 @@ function love.load()
 	settings.showClock = false
 	
 	
-	settings.smallFontFamily = "RobotoCondensed-Light.ttf"
-	settings.smallFontSize = 23 * settings.windowScale
+	settings.smallFontFamily = "AvantGarde_LT_Medium.ttf"
+	settings.smallFontSize = 22 * settings.windowScale
 	settings.smallFont = love.graphics.newFont(
 		settings.smallFontFamily,
 		settings.smallFontSize
 	)
 	
-	settings.compassFontFamily = "RobotoCondensed-Light.ttf"
-	settings.compassFontSize = 43 * settings.windowScale
-	settings.compassFont = love.graphics.newFont(
-		settings.compassFontFamily,
-		settings.compassFontSize
-	)
+	settings.compassFontFamily = "AvantGarde_LT_Medium.ttf"
+	settings.compassFontSize = 35
+	
 	
 	
 	love.window.setMode(
@@ -137,7 +142,7 @@ function love.load()
 	-- love.graphics.setLineStyle("smooth")
 	
 	
-	MenuButton = button:new(
+	MenuButtonWidget = button:new(
 		settings.windowWidth * settings.windowScale - 68 * settings.windowScale, -- X
 		48 * settings.windowScale, -- Y
 		0.5 * settings.windowScale, -- Scale (the image has double size)
@@ -157,7 +162,7 @@ function love.load()
 		headlineTextWidget.text = "Clock"
 	end
     
-	geoTextWidget = text:new(190, 6, settings.headlineText, settings.headlineFont)
+	geoTextWidget = text:new(190, 6, settings.headlineText, settings.headlineFont, settings.windowScale)
 	geoTextWidget:setText("47,50° N\n9,73° O")
 	geoTextWidget:setXY(10, 518)
 	geoTextWidget:setFont(settings.smallFont)
@@ -170,6 +175,8 @@ function love.load()
 			windowHeight / 2,
 			love.graphics.newImage("compass_background.png"),
 			love.graphics.newImage("compass.png"),
+			settings.compassFontFamily,
+			settings.compassFontSize,
 			settings.windowScale
 		)
 	end
@@ -393,7 +400,7 @@ function love.draw()
 		    
 		    local numberRadius =
 			    settings.clockRadius * settings.windowScale -
-			    52 * settings.windowScale -
+			    48 * settings.windowScale -
 			    settings.clockBorderWidth * settings.windowScale
 			    
 		    local x = centerX + numberRadius * math.sin(angle)
@@ -402,7 +409,7 @@ function love.draw()
 		    local text = tostring(i == 0 and 12 or i)
 		    local textWidth = settings.hourNumbersFont:getWidth(text)
 		    love.graphics.setColor(1, 1, 1)
-		    love.graphics.print(text, x - textWidth/2, y - 14 * settings.windowScale)
+		    love.graphics.print(text, x - textWidth/2, y - 15 * settings.windowScale)
 	    end
 
 

@@ -21,6 +21,7 @@ function button_module:new(x, y, scale, imgNormal, imgHover, funcClick, funcHove
 	newButton.height = imgNormal:getHeight() * scale
 	newButton.imgNormal = imgNormal
 	newButton.imgHover = imgHover
+	newButton.scale = scale
 	
 	newButton.funcClick = funcClick or function()print("No function detected")end
 	newButton.funcHover = funcHover or function()print("No function detected")end
