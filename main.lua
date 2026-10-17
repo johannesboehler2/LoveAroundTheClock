@@ -40,7 +40,7 @@ function love.load()
 	settings.windowWidth = 540
 	settings.windowHeight = 620
 	settings.windowScale = 0.667
-	settings.windowScale = 1.4
+	settings.windowScale = 1
 	--settings.windowScale = 1.85
 	settings.headlineFontFamily = "assets/fonts/GlacialIndifference-Regular.otf"
 	settings.headlineFontSize = 34 * settings.windowScale
@@ -84,6 +84,8 @@ function love.load()
 	settings.compassFontFamily = "assets/fonts/GlacialIndifference-Bold.otf"
 	settings.compassFontSize = 35
 	
+	settings.overlayFontFamily = "assets/fonts/GlacialIndifference-Regular.otf"
+	
 	
 	
 	love.window.setMode(
@@ -96,6 +98,7 @@ function love.load()
 		}
 	)
 	
+	backgroundImage = love.graphics.newImage("assets/images/background_dark.png")
 	
 	if settings.fullscreen == true then
 		settings.windowScale = 1200 / settings.windowHeight
@@ -118,6 +121,8 @@ function love.load()
 		settings.windowHeight = 1200 / settings.windowScale
 		
 		love.window.setFullscreen(true, "desktop")
+		
+		backgroundImage = love.graphics.newImage("assets/images/background_dark_fullscreen.png")
 	end
 	
 	
@@ -151,6 +156,7 @@ function love.load()
 		love.graphics.newImage("assets/images/menu_button_hover_002.png"),
 		function() -- Button's function
 		    --print("Hello")
+		    overlayWidget:toggle()
 		end,
 		function() -- Button's function
 		    --print("Hover")
@@ -165,7 +171,7 @@ function love.load()
     
 	geoTextWidget = text:new(190, 6, settings.headlineText, settings.smallFontFamily, settings.smallFontSize, settings.windowScale)
 	geoTextWidget:setText("47,50° N\n9,73° O")
-	geoTextWidget:setXY(10, 518)
+	geoTextWidget:setXY(12, 521)
 	--geoTextWidget:setFont(settings.smallFont)
 	geoTextWidget:setColor({0.76, 0.76, 0.76, 1})
     
@@ -183,11 +189,13 @@ function love.load()
 	end
 
     
-	backgroundImage = love.graphics.newImage("assets/images/background.png")
+	
+	backgroundImage002 = love.graphics.newImage("assets/images/Winsch_Comet.png")
+	
 	clockBackground = love.graphics.newImage("assets/images/clock_background.png")
 	
 	
-	--overlayWidget = overlay:new()
+	overlayWidget = overlay:new()
 end
 
 function love.update(dt)
@@ -220,11 +228,36 @@ function love.update(dt)
 				settings.showClock = true
 			end
 		end
+		
+		if key == "f3" and isrepeat == false then
+			if settings.showGamepad then
+				settings.showGamepad = false
+			else
+				settings.showGamepad = true
+			end
+		end
+		
+		if key == "f10" and isrepeat == false then
+			overlayWidget:toggle()
+		end
+		
+		print(key)
 	end
 	
 	
 	local joysticks = love.joystick.getJoysticks()
 	gamepad = joysticks[1]
+	
+	if gamepad then
+		if gamepad:isDown(10) then
+			if gamepadButtonPressed == false then 
+				overlayWidget:toggle()
+			end
+			gamepadButtonPressed = true
+		else
+			gamepadButtonPressed = false
+		end
+	end
 	
 
 	-- Current time
@@ -257,9 +290,19 @@ function love.draw()
 		 	0.5 * settings.windowScale,
 		 	0.5 * settings.windowScale
 	 	)
+	 	
+	 	love.graphics.setColor(0, 0, 0, 0.7)
+	 	
+		--love.graphics.rectangle(
+		--	"fill",
+		--    0,
+		--    0,
+		--    settings.windowWidth * settings.windowScale,
+		--    settings.windowHeight * settings.windowScale
+	    	--)
 	 end
 	 
- 	
+ 	love.graphics.setColor(Color("#ffffff"))
  	
  	button:draw()
 	text:draw()

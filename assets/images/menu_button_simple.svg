@@ -9,7 +9,7 @@
    id="svg1"
    inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
    sodipodi:docname="menu_button_simple.svg"
-   inkscape:export-filename="menu_button_hover_002.png"
+   inkscape:export-filename="menu_button_normal_002.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -149,7 +149,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Button hover"
-     style="display:inline">
+     style="display:none">
     <rect
        style="font-variation-settings:'opsz' 32, 'wght' 800;fill:url(#linearGradient7);fill-opacity:1;stroke-width:0.472903"
        id="rect1-9"

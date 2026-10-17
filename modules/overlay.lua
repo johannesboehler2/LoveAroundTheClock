@@ -9,33 +9,75 @@ local overlayList = {} -- Here we store all the new overlays
 
 
 function overlayModule:new()
-	newOverlay = {}
+	local newOverlay = {}
 	
+	newOverlay.opacity = 0
+	newOverlay.finalOpacity = 0.78
+	newOverlay.openAfter = 1
+	newOverlay.closeAfter = 14
+	newOverlay.time = 0
+	newOverlay.fadeIn = false
+	newOverlay.fadeOut = false
+	newOverlay.isOpen = false
+	newOverlay.font = love.graphics.newFont(
+		settings.overlayFontFamily,
+		28 * settings.windowScale
+	)
+	newOverlay.aboutFont = love.graphics.newFont(
+		settings.overlayFontFamily,
+		24 * settings.windowScale
+	)
 	
-	--MenuButtonWidget002 = overlayButton:new(
-	--	settings.windowWidth * settings.windowScale - 68 * settings.windowScale, -- X
-	--	148 * settings.windowScale, -- Y
-	--	0.5 * settings.windowScale, -- Scale (the image has double size)
-	--	love.graphics.newImage("assets/images/menu_button_normal_002.png"),
-	--	love.graphics.newImage("assets/images/menu_button_hover_002.png"),
-	--	function() -- Button's function
-	--	    --print("Hello")
-	--	end,
-	--	function() -- Button's function
-	--	    --print("Hover")
-	--	end,
-	--	"Menu 002",
-	--	{1,1,1, 0.6}
-	--)
+	function newOverlay:open()
+		self.fadeIn = true
+		self.fadeOut = false
+	end
 	
-	-- Add menu button widget to newOverlay
+	function newOverlay:close()
+		self.fadeIn = false
+		self.fadeOut = true
+	end
 	
+	function newOverlay:toggle()
+		if self.isOpen then
+			self:close()
+		else
+			self:open()
+		end
+	end
 	
-	font = love.graphics.newFont(
-			settings.compassFontFamily,
-			settings.compassFontSize * settings.windowScale
-		)
-	
+	newOverlay.menuList = {
+		{
+			"Uhr anzeigen", -- Text
+			true, -- Toggle
+			false, -- Back
+			false -- Active
+		},
+		{
+			"Kompass anzeigen",
+			true, -- Toggle
+			false,
+			true
+		},
+		{
+			"Koordinaten anzeigen",
+			true, -- Toggle
+			false,
+			false
+		},
+		{
+			"About ...",
+			false, -- Toggle
+			false,
+			false
+		},
+		{
+			"Zurück",
+			false, -- Toggle
+			true,
+			false
+		}
+	}
 	
 	table.insert(overlayList, newOverlay)
 	
@@ -45,7 +87,52 @@ end
 
 function overlayModule:update(dt) -- Put this in love.update()
 	for i,overlayElement in ipairs(overlayList) do
-        	overlayButton:update(dt)
+        	overlayElement.time = overlayElement.time + dt 
+        	
+        	
+        	
+        	--if overlayElement.time > overlayElement.openAfter and overlayElement.time < overlayElement.openAfter + 1 + overlayElement.closeAfter and overlayElement.fadeOut == false then
+		--	overlayElement.fadeIn = true
+        	--	overlayElement.opacity = overlayElement.opacity + 1 / (0.5/ dt) -- 0.15s
+        	--	
+		--	if overlayElement.opacity > overlayElement.finalOpacity then
+		--		overlayElement.opacity = overlayElement.finalOpacity
+		--		overlayElement.fadeIn = false
+		--	end
+        	--end
+        	
+        	--if overlayElement.time > overlayElement.openAfter + 1 + overlayElement.closeAfter then
+        	--	overlayElement.fadeOut = true
+        	--	overlayElement.opacity = overlayElement.opacity - 1 / (0.5 / dt) -- 0.15s
+        	--
+		--	if overlayElement.opacity < 0 then
+		--		overlayElement.opacity = 0
+		--		overlayElement.fadeOut = false
+		--	end
+        	--end
+        	
+        	if overlayElement.fadeIn == true then
+        		overlayElement.opacity = overlayElement.opacity + 1 / (0.2/ dt) -- 0.5s
+        		
+        		overlayElement.isOpen = true
+        		
+			if overlayElement.opacity > overlayElement.finalOpacity then
+				overlayElement.opacity = overlayElement.finalOpacity
+				overlayElement.fadeIn = false
+			end
+        	end
+        	
+        	if overlayElement.fadeOut == true then
+        		overlayElement.opacity = overlayElement.opacity - 1 / (0.2 / dt) -- 0.5s
+        		
+        		overlayElement.isOpen = false
+        	
+			if overlayElement.opacity < 0 then
+				overlayElement.opacity = 0
+				overlayElement.fadeOut = false
+			end
+        	end
+        	
 	end
 end
 
@@ -55,7 +142,7 @@ function overlayModule:draw() -- Put this in love.draw()
 	for i,overlayElement in ipairs(overlayList) do
 		-- Menu overlay
 		
-	 	love.graphics.setColor(0,0,0, 0.8)
+	 	love.graphics.setColor(0,0,0, overlayElement.opacity)
 		love.graphics.draw(
 		 	backgroundImage,
 		 	0,
@@ -66,28 +153,65 @@ function overlayModule:draw() -- Put this in love.draw()
 	 	)
 	 	
 	 	
-	 	love.graphics.setColor(1,1,1,0.8)
-	 	
+	 	love.graphics.setColor(1, 1, 1, overlayElement.opacity)
+		love.graphics.setFont(overlayElement.font)
+
 		
+		for i, menuElement in ipairs(overlayElement.menuList) do
+		 	local text
+		 	
+		 	if menuElement[3] then
+		 		text = "    " .. menuElement[1]
+		 		overlayMenuImage = love.graphics.newImage("assets/images/menu_button_rectangle_arrow.png") -- TODO refactor for performance
+		 	else
+		 		text = menuElement[1]
+		 		overlayMenuImage = love.graphics.newImage("assets/images/menu_button_rectangle_normal.png") -- TODO refactor for performance
+		 	end
+		 	
+		 	toggleMenuImage = love.graphics.newImage("assets/images/toggle.png") -- TODO refactor for performance
+		 	
+		 	
+		 	if menuElement[4] then
+		 		love.graphics.setColor(1, 1, 1, overlayElement.opacity)
+		 	else
+		 		love.graphics.setColor(0.7, 0.7, 0.7, overlayElement.opacity)
+		 	end
+		 	
+		 						
+			love.graphics.draw(
+			 	overlayMenuImage,
+			 	(settings.windowWidth * settings.windowScale - overlayMenuImage:getWidth() / 2 * settings.windowScale) / 2,
+			 	(156 + (i - 1) * 62) * settings.windowScale,
+			 	0,
+			 	0.5 * settings.windowScale,
+			 	0.5 * settings.windowScale
+		 	)
+		 	
+		 	love.graphics.print(
+				text,
+				102 * settings.windowScale,
+				(168 + (i - 1) * 62) * settings.windowScale
+			)
+			
+			
+			if menuElement[2] then
+				love.graphics.draw(
+				 	toggleMenuImage,
+				 	(settings.windowWidth * settings.windowScale + overlayMenuImage:getWidth() / 2 * settings.windowScale - 126 * settings.windowScale) / 2,
+				 	(161 + (i - 1) * 62) * settings.windowScale,
+				 	0,
+				 	0.5 * settings.windowScale,
+				 	0.5 * settings.windowScale
+			 	)
+		 	end
+		end
 		
-		love.graphics.setFont(font)
-	 	
-	 	love.graphics.print(
-			"Menu 001",
-			260,
-			210
-		)
+		love.graphics.setFont(overlayElement.aboutFont)
 		
 		love.graphics.print(
-			"Menu 002",
-			260,
-			280
-		)
-		
-		love.graphics.print(
-			"Menu 003",
-			260,
-			350
+			"LoveAroundTheClock 0.1\nby Johannes Böhler",
+			102 * settings.windowScale,
+			480 * settings.windowScale
 		)
 		
 		

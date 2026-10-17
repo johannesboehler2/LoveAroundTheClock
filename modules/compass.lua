@@ -103,15 +103,15 @@ function compassModule:draw() -- Put this in love.draw()
 		love.graphics.setColor(0, 0, 0, 1)
 		love.graphics.print(
 			compassDegreeRounded,
-			(11 - 1) * compassElement.scale,
-			compassElement.yCenter - 267 * compassElement.scale - 1 * compassElement.scale
+			(13 - 1) * compassElement.scale,
+			compassElement.yCenter - 268 * compassElement.scale - 1 * compassElement.scale
 		)
 		
 		love.graphics.setColor(0.76, 0.76, 0.76, 1)
 		love.graphics.print(
 			compassDegreeRounded,
-			(11) * compassElement.scale,
-			compassElement.yCenter - 267 * compassElement.scale
+			(13) * compassElement.scale,
+			compassElement.yCenter - 268 * compassElement.scale
 		)
 		
 	end
