@@ -1,6 +1,7 @@
 button = require "modules/button"
 compass = require "modules/compass"
 text = require "modules/text"
+clock = require "modules/clock"
 overlay = require "modules/overlay"
 
 
@@ -13,7 +14,8 @@ function round(num, decimal)
 	return math.floor(num * mult + 0.5) / mult
 end
 
-local function Color(hex, value)
+
+function Color(hex, value)
 	return {
 		tonumber(string.sub(hex, 2, 3), 16) / 256,
 		tonumber(string.sub(hex, 4, 5), 16) / 256,
@@ -40,7 +42,7 @@ function love.load()
 	settings.windowWidth = 540
 	settings.windowHeight = 620
 	settings.windowScale = 0.667
-	settings.windowScale = 1
+	settings.windowScale = 1.4
 	--settings.windowScale = 1.85
 	settings.headlineFontFamily = "assets/fonts/GlacialIndifference-Regular.otf"
 	settings.headlineFontSize = 34 * settings.windowScale
@@ -48,10 +50,6 @@ function love.load()
 		settings.headlineFontFamily,
 		settings.headlineFontSize
 	)
-	--settings.hourNumbersFontSize = 24 * settings.windowScale
-	--settings.hourNumbersFont = love.graphics.newFont(
-	--	settings.hourNumbersFontSize
-	--)
 	
 	settings.hoursFontFamily = "assets/fonts/GlacialIndifference-Regular.otf"
 	settings.hourNumbersFontSize = 24 * settings.windowScale
@@ -72,6 +70,7 @@ function love.load()
 	settings.showHeadline = false
 	settings.showCompass = true
 	settings.showClock = false
+	settings.nightMode = true
 	
 	
 	settings.smallFontFamily = "assets/fonts/GlacialIndifference-Regular.otf"
@@ -85,7 +84,6 @@ function love.load()
 	settings.compassFontSize = 35
 	
 	settings.overlayFontFamily = "assets/fonts/GlacialIndifference-Regular.otf"
-	
 	
 	
 	love.window.setMode(
@@ -102,7 +100,6 @@ function love.load()
 	
 	if settings.fullscreen == true then
 		settings.windowScale = 1200 / settings.windowHeight
-	
 	
 		settings.windowWidth = 1920
 		settings.windowHeight = 1200
@@ -127,7 +124,15 @@ function love.load()
 	
 	
 	love.window.setTitle(settings.headlineText)
-	love.graphics.setBackgroundColor(settings.backgroundColor)
+	
+	setImages()
+	
+	if settings.nightMode then
+		love.graphics.setBackgroundColor(0, 0, 0)
+	else
+		love.graphics.setBackgroundColor(settings.backgroundColor)
+	end
+	
 	
 	windowWidth, windowHeight = love.window.getMode()
 	
@@ -145,15 +150,13 @@ function love.load()
 	print(love.system.getPowerInfo())
 	print(love.window.getDisplayName(1))
 
-	-- love.graphics.setLineStyle("smooth")
-	
 	
 	MenuButtonWidget = button:new(
 		settings.windowWidth * settings.windowScale - 68 * settings.windowScale, -- X
 		48 * settings.windowScale, -- Y
 		0.5 * settings.windowScale, -- Scale (the image has double size)
-		love.graphics.newImage("assets/images/menu_button_normal_002.png"),
-		love.graphics.newImage("assets/images/menu_button_hover_002.png"),
+		menuButtonImageNormal,
+		menuButtonImageHover,
 		function() -- Button's function
 		    --print("Hello")
 		    overlayWidget:toggle()
@@ -172,7 +175,6 @@ function love.load()
 	geoTextWidget = text:new(190, 6, settings.headlineText, settings.smallFontFamily, settings.smallFontSize, settings.windowScale)
 	geoTextWidget:setText("47,50° N\n9,73° O")
 	geoTextWidget:setXY(12, 521)
-	--geoTextWidget:setFont(settings.smallFont)
 	geoTextWidget:setColor({0.76, 0.76, 0.76, 1})
     
     
@@ -180,8 +182,8 @@ function love.load()
 		compassWidget = compass:new(
 			windowWidth / 2,
 			windowHeight / 2,
-			love.graphics.newImage("assets/images/compass_background.png"),
-			love.graphics.newImage("assets/images/compass.png"),
+			compassBackgroundImage,
+			compassImage,
 			settings.compassFontFamily,
 			settings.compassFontSize,
 			settings.windowScale
@@ -194,7 +196,8 @@ function love.load()
 	
 	clockBackground = love.graphics.newImage("assets/images/clock_background.png")
 	
-	
+	clockWidget = clock:new(0, 0, clockBackground, settings.windowScale)
+
 	overlayWidget = overlay:new()
 end
 
@@ -266,41 +269,45 @@ function love.update(dt)
 	button:update(dt)
 	text:update(dt)
    	compass:update(dt)
+   	clock:update(dt)
 	overlay:update(dt)
 end
 
 function love.draw()
 	love.graphics.setColor(Color("#ffffff"))
 	 
-	 if settings.fullscreen then
-		 love.graphics.draw(
-		 	backgroundImage,
-		 	0,
-		 	0,
-		 	0,
-		 	backgroundImage:getWidth() / settings.windowWidth, -- TODO
-		 	backgroundImage:getHeight() / settings.windowHeight * 1.8 -- TODO
-	 	)	 
-	 else
-		 love.graphics.draw(
-		 	backgroundImage,
-		 	0,
-		 	0,
-		 	0,
-		 	0.5 * settings.windowScale,
-		 	0.5 * settings.windowScale
-	 	)
-	 	
-	 	love.graphics.setColor(0, 0, 0, 0.7)
-	 	
-		--love.graphics.rectangle(
-		--	"fill",
-		--    0,
-		--    0,
-		--    settings.windowWidth * settings.windowScale,
-		--    settings.windowHeight * settings.windowScale
-	    	--)
+	 if settings.nightMode == false then
+		 if settings.fullscreen then
+			 love.graphics.draw(
+			 	backgroundImage,
+			 	0,
+			 	0,
+			 	0,
+			 	backgroundImage:getWidth() / settings.windowWidth, -- TODO
+			 	backgroundImage:getHeight() / settings.windowHeight * 1.8 -- TODO
+		 	)	 
+		 else
+			 love.graphics.draw(
+			 	backgroundImage,
+			 	0,
+			 	0,
+			 	0,
+			 	0.5 * settings.windowScale,
+			 	0.5 * settings.windowScale
+		 	)
+		 	
+		 	love.graphics.setColor(0, 0, 0, 0.7)
+		 	
+			--love.graphics.rectangle(
+			--	"fill",
+			--    0,
+			--    0,
+			--    settings.windowWidth * settings.windowScale,
+			--    settings.windowHeight * settings.windowScale
+		    	--)
+		 end
 	 end
+		 
 	 
  	love.graphics.setColor(Color("#ffffff"))
  	
@@ -323,241 +330,8 @@ function love.draw()
 	
 	
 	if settings.showClock then
-		love.graphics.setColor(1, 1, 1)
- 	
-     	love.graphics.draw(
-     		clockBackground,
-     		windowWidth / 2 - 0.5 * clockBackground:getWidth() / 2 * settings.windowScale,
-     		windowHeight / 2 -0.5 * clockBackground:getHeight() / 2 * settings.windowScale,
-     		0, 0.5 * settings.windowScale
-	    )
-	
-	
-	    -- Clock face
-	
-	    love.graphics.setColor(0.7, 0.7, 0.7)
-	    love.graphics.circle(
-		    "fill",
-		    centerX,
-		    centerY + settings.deepWidth * settings.windowScale / 2,
-		    settings.clockRadius * settings.windowScale - 0.5
-	    )
-	    love.graphics.circle(
-		    "line",
-		    centerX,
-		    centerY + settings.deepWidth * settings.windowScale / 2,
-		    settings.clockRadius * settings.windowScale
-	    )
-
-	    love.graphics.setColor(1, 1, 1)
-	    love.graphics.circle(
-		    "fill",
-		    centerX,
-		    centerY - settings.deepWidth * settings.windowScale / 2,
-		    settings.clockRadius * settings.windowScale - 0.5
-	    )
-	    love.graphics.circle(
-		    "line",
-		    centerX,
-		    centerY - settings.deepWidth * settings.windowScale / 2,
-		    settings.clockRadius * settings.windowScale
-	    )
-
-	    love.graphics.setColor(Color("#b2262c")) -- TODO: get from settings
-	    love.graphics.circle(
-		    "fill",
-		    centerX,
-		    centerY - settings.deepWidth * settings.windowScale,
-		    settings.clockRadius * settings.windowScale - settings.clockBorderWidth * settings.windowScale - 0.5
-	    )
-	    love.graphics.circle(
-		    "line",
-		    centerX,
-		    centerY - settings.deepWidth * settings.windowScale,
-		    settings.clockRadius * settings.windowScale - settings.clockBorderWidth * settings.windowScale
-	    )
-
-	    love.graphics.setColor(Color("#ed333b"))-- TODO: get from settings
-	    love.graphics.circle(
-		    "fill",
-		    centerX,
-		    centerY,
-		    settings.clockRadius * settings.windowScale - settings.clockBorderWidth * settings.windowScale - 0.5
-	    )
-	    love.graphics.circle(
-		    "line",
-		    centerX,
-		    centerY,
-		    settings.clockRadius * settings.windowScale - settings.clockBorderWidth * settings.windowScale
-	    )
-    
-
-	    love.graphics.setColor(1, 1, 1, 0.8) -- TODO: get from settings
-    
-	for i = 0, 59 do
-		local angle = math.rad(i * 6)
-        
-		local innerRadius =
-			settings.clockRadius * settings.windowScale -
-			6 * settings.windowScale -
-			settings.clockBorderWidth * settings.windowScale
-        	
-		local outerRadius =
-			settings.clockRadius * settings.windowScale -
-			settings.clockBorderWidth * settings.windowScale
-        	
-		    local x1 = centerX + innerRadius * math.sin(angle)
-		    local y1 = centerY - innerRadius * math.cos(angle)
-		    local x2 = centerX + outerRadius * math.sin(angle)
-		    local y2 = centerY - outerRadius * math.cos(angle)
-
-		    if i % 15 == 0 then
-			    love.graphics.setLineWidth(8 * settings.windowScale)
-			    love.graphics.line(
-				    x1,
-				    y1,
-				    x2 - 30 * settings.windowScale * math.sin(angle),
-				    y2 + 30 * settings.windowScale * math.cos(angle)
-			    )
-		    elseif i % 5 == 0 then
-			    love.graphics.setLineWidth(4 * settings.windowScale)
-			    love.graphics.line(
-				    x1,
-				    y1,
-				    x2 - 30 * settings.windowScale * math.sin(angle),
-				    y2 + 30 * settings.windowScale * math.cos(angle)
-			    )
-		    else
-			    love.graphics.setLineWidth(2 * settings.windowScale)
-			    love.graphics.line(
-				    x1,
-				    y1,
-				    x2 - 12 * settings.windowScale * math.sin(angle),
-				    y2 + 12 * settings.windowScale * math.cos(angle)
-        			)
-		    end
-	    end
-
-
-	    -- Clock face hour numbers
-
-	    love.graphics.setFont(settings.hourNumbersFont)
-	    for i = 1, 12 do
-		    local angle = math.rad((i) * 30)
-		    
-		    local numberRadius =
-			    settings.clockRadius * settings.windowScale -
-			    48 * settings.windowScale -
-			    settings.clockBorderWidth * settings.windowScale
-			    
-		    local x = centerX + numberRadius * math.sin(angle)
-		    local y = centerY - numberRadius * math.cos(angle)
-
-		    local text = tostring(i == 0 and 12 or i)
-		    local textWidth = settings.hourNumbersFont:getWidth(text)
-		    love.graphics.setColor(1, 1, 1)
-		    love.graphics.print(text, x - textWidth/2, y - 15 * settings.windowScale)
-	    end
-
-
-	    -- Hour hand
-
-	    local hourAngle = math.rad((currentTime.hour % 12) * 30 + currentTime.min * 0.5)
-	    local hourLength =
-		    (
-			    settings.clockRadius * settings.windowScale -
-			    settings.clockBorderWidth * settings.windowScale
-		    ) * 0.6
-	    local hourX = centerX + hourLength * math.sin(hourAngle)
-	    local hourY = centerY - hourLength * math.cos(hourAngle)
-
-	    love.graphics.setLineWidth(12 * settings.windowScale)
-
-	    love.graphics.setColor(0, 0, 0, 0.2)
-	    love.graphics.line(
-		    centerX + 3 * settings.windowScale,
-		    centerY + 3 * settings.windowScale,
-		    hourX + 3 * settings.windowScale,
-		    hourY + 3 * settings.windowScale
-	    )
-
-	    love.graphics.setColor(1, 1, 1)
-	    love.graphics.line(centerX, centerY, hourX, hourY)
-
-
-	    -- Minute hand
-
-	    local minuteAngle = math.rad(currentTime.min * 6)
-	    local minuteLength = 
-		    (
-			    settings.clockRadius * settings.windowScale -
-			    settings.clockBorderWidth * settings.windowScale
-		    ) * 0.76
-	    local minuteX = centerX + minuteLength * math.sin(minuteAngle)
-	    local minuteY = centerY - minuteLength * math.cos(minuteAngle)
-
-	    love.graphics.setLineWidth(6 * settings.windowScale)
-
-	    love.graphics.setColor(0, 0, 0, 0.2)
-	    love.graphics.line(
-		    centerX + 3 * settings.windowScale,
-		    centerY + 3 * settings.windowScale,
-		    minuteX + 3 * settings.windowScale,
-		    minuteY + 3 * settings.windowScale
-	    )
-
-	    love.graphics.setColor(1, 1, 1)
-	    love.graphics.line(centerX, centerY, minuteX, minuteY)
-
-
-	    -- Second hand
-
-	    local secondAngle = math.rad(currentTime.sec * 6)
-	    local secondLength =
-		    (
-			    settings.clockRadius * settings.windowScale -
-			    settings.clockBorderWidth * settings.windowScale
-		    ) * 0.85
-	    local secondX = centerX + secondLength * math.sin(secondAngle)
-	    local secondY = centerY - secondLength * math.cos(secondAngle)
-
-	    love.graphics.setLineWidth(2 * settings.windowScale)
-
-	    love.graphics.setColor(0, 0, 0, 0.2)
-	    love.graphics.line(
-		    centerX + 3 * settings.windowScale,
-		    centerY + 3 * settings.windowScale,
-		    secondX + 3 * settings.windowScale,
-		    secondY + 3 * settings.windowScale
-	    )
-
-	    love.graphics.setColor(1, 1, 1)
-	    love.graphics.line(centerX, centerY, secondX, secondY)
-
-
-	    -- Circle in center
-	    
-	    love.graphics.setColor(0, 0, 0, 0.2)
-	    love.graphics.circle(
-		    "fill",
-		    centerX + 1.5 * settings.windowScale,
-		    centerY + 1.5 * settings.windowScale,
-		    18 * settings.windowScale
-	    )
-
-	    love.graphics.setColor(1, 1, 1)
-	    love.graphics.circle("fill", centerX, centerY, 15 * settings.windowScale)
-
-	    love.graphics.setLineWidth(2 * settings.windowScale)
-	    love.graphics.setColor(1, 1, 1)
-	    love.graphics.circle("line", centerX, centerY, 15 * settings.windowScale)
-
-	    love.graphics.setColor(Color("#ed333b"))
-	    love.graphics.circle("line", centerX, centerY, 3 * settings.windowScale)
-    end
-    
-    
-    
+		clock:draw()
+	end
     
     
     	-- Gamepad
@@ -567,7 +341,6 @@ function love.draw()
 	end
 	
 	overlay:draw()
- 	
 end
 
 function drawGamepad()
@@ -635,4 +408,21 @@ function drawGamepad()
 	
 	
 	-- love.graphics.print(gamepad:getGamepadMappingString(), 400, 700)
+end
+
+
+function setImages()
+	if settings.nightMode then
+		menuButtonImageNormal = love.graphics.newImage("assets/images/menu_button_normal_red.png")
+		menuButtonImageHover = love.graphics.newImage("assets/images/menu_button_hover_red.png")
+		
+		compassBackgroundImage = love.graphics.newImage("assets/images/compass_background_red.png")
+		compassImage = love.graphics.newImage("assets/images/compass_red.png")
+	else
+		menuButtonImageNormal = love.graphics.newImage("assets/images/menu_button_normal_002.png")
+		menuButtonImageHover = love.graphics.newImage("assets/images/menu_button_hover_002.png")
+		
+		compassBackgroundImage = love.graphics.newImage("assets/images/compass_background.png")
+		compassImage = love.graphics.newImage("assets/images/compass.png")
+	end
 end

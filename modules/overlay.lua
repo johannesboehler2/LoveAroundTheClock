@@ -13,8 +13,8 @@ function overlayModule:new()
 	
 	newOverlay.opacity = 0
 	newOverlay.finalOpacity = 0.78
-	newOverlay.openAfter = 1
-	newOverlay.closeAfter = 14
+	newOverlay.openAfter = 1 -- TODO remove
+	newOverlay.closeAfter = 14 -- TODO remove
 	newOverlay.time = 0
 	newOverlay.fadeIn = false
 	newOverlay.fadeOut = false
@@ -48,7 +48,7 @@ function overlayModule:new()
 	
 	newOverlay.menuList = {
 		{
-			"Uhr anzeigen", -- Text
+			"Uhr anzeigen", -- Text TODO make it smarter
 			true, -- Toggle
 			false, -- Back
 			false -- Active
@@ -148,8 +148,8 @@ function overlayModule:draw() -- Put this in love.draw()
 		 	0,
 		 	0,
 		 	0,
-		 	0.5 * settings.windowScale,
-		 	0.5 * settings.windowScale
+		 	0.5 * settings.windowScale, -- TODO
+		 	0.5 * settings.windowScale -- TODO
 	 	)
 	 	
 	 	
@@ -180,28 +180,28 @@ function overlayModule:draw() -- Put this in love.draw()
 		 						
 			love.graphics.draw(
 			 	overlayMenuImage,
-			 	(settings.windowWidth * settings.windowScale - overlayMenuImage:getWidth() / 2 * settings.windowScale) / 2,
-			 	(156 + (i - 1) * 62) * settings.windowScale,
+			 	(settings.windowWidth * settings.windowScale - overlayMenuImage:getWidth() / 2 * settings.windowScale) / 2, -- TODO
+			 	(156 + (i - 1) * 62) * settings.windowScale, -- TODO
 			 	0,
-			 	0.5 * settings.windowScale,
-			 	0.5 * settings.windowScale
+			 	0.5 * settings.windowScale, -- TODO
+			 	0.5 * settings.windowScale -- TODO
 		 	)
 		 	
 		 	love.graphics.print(
 				text,
-				102 * settings.windowScale,
-				(168 + (i - 1) * 62) * settings.windowScale
+				102 * settings.windowScale, -- TODO
+				(168 + (i - 1) * 62) * settings.windowScale -- TODO
 			)
 			
 			
 			if menuElement[2] then
 				love.graphics.draw(
 				 	toggleMenuImage,
-				 	(settings.windowWidth * settings.windowScale + overlayMenuImage:getWidth() / 2 * settings.windowScale - 126 * settings.windowScale) / 2,
-				 	(161 + (i - 1) * 62) * settings.windowScale,
+				 	(settings.windowWidth * settings.windowScale + overlayMenuImage:getWidth() / 2 * settings.windowScale - 126 * settings.windowScale) / 2, -- TODO
+				 	(161 + (i - 1) * 62) * settings.windowScale, -- TODO
 				 	0,
-				 	0.5 * settings.windowScale,
-				 	0.5 * settings.windowScale
+				 	0.5 * settings.windowScale, -- TODO
+				 	0.5 * settings.windowScale -- TODO
 			 	)
 		 	end
 		end
@@ -210,16 +210,12 @@ function overlayModule:draw() -- Put this in love.draw()
 		
 		love.graphics.print(
 			"LoveAroundTheClock 0.1\nby Johannes Böhler",
-			102 * settings.windowScale,
-			480 * settings.windowScale
+			102 * settings.windowScale, -- TODO
+			480 * settings.windowScale -- TODO
 		)
 		
 		
 		love.graphics.setColor(r,g,b,a) -- We reset the color to the state before we draw the buttons
-		
-		
-		
-		--overlayButton:draw()
 	end
 end
 
