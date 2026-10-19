@@ -8,7 +8,7 @@ local overlayModule = {} -- Here we store all the functions
 local overlayList = {} -- Here we store all the new overlays
 
 
-function overlayModule:new(scale)
+function overlayModule:new(scale, imgNormal, imgNormalArrow, menuList, bottomText)
 	local newOverlay = {}
 	
 	newOverlay.opacity = 0
@@ -20,15 +20,18 @@ function overlayModule:new(scale)
 	newOverlay.fadeOut = false
 	newOverlay.isOpen = false
 	newOverlay.scale = scale
+	newOverlay.imgNormal = imgNormal
+	newOverlay.imgNormalArrow = imgNormalArrow
+	newOverlay.menuList = menuList
+	newOverlay.bottomText = bottomText or false
 	newOverlay.font = love.graphics.newFont(
 		settings.overlayFontFamily,
 		28 * newOverlay.scale
 	)
-	newOverlay.aboutFont = love.graphics.newFont(
-		settings.overlayFontFamily,
+	newOverlay.bottomFont = love.graphics.newFont(
+		settings.overlayFontFamily, -- TODO
 		24 * newOverlay.scale
 	)
-	
 	
 	
 	function newOverlay:open()
@@ -49,38 +52,7 @@ function overlayModule:new(scale)
 		end
 	end
 	
-	newOverlay.menuList = {
-		{
-			"Uhr anzeigen", -- Text TODO make it smarter
-			true, -- Toggle
-			false, -- Back
-			false -- Active
-		},
-		{
-			"Kompass anzeigen",
-			true, -- Toggle
-			false,
-			true
-		},
-		{
-			"Koordinaten anzeigen",
-			true, -- Toggle
-			false,
-			false
-		},
-		{
-			"About ...",
-			false, -- Toggle
-			false,
-			false
-		},
-		{
-			"Zurück",
-			false, -- Toggle
-			true,
-			false
-		}
-	}
+	
 	
 	table.insert(overlayList, newOverlay)
 	
@@ -165,10 +137,10 @@ function overlayModule:draw() -- Put this in love.draw()
 		 	
 		 	if menuElement[3] then
 		 		text = "    " .. menuElement[1]
-		 		overlayMenuImage = love.graphics.newImage("assets/images/menu_button_rectangle_arrow.png") -- TODO refactor for performance
+		 		overlayMenuImage = overlayElement.imgNormalArrow
 		 	else
 		 		text = menuElement[1]
-		 		overlayMenuImage = love.graphics.newImage("assets/images/menu_button_rectangle_normal.png") -- TODO refactor for performance
+		 		overlayMenuImage = overlayElement.imgNormal
 		 	end
 		 	
 		 	toggleMenuImage = love.graphics.newImage("assets/images/toggle.png") -- TODO refactor for performance
@@ -209,17 +181,18 @@ function overlayModule:draw() -- Put this in love.draw()
 		 	end
 		end
 		
-		love.graphics.setFont(overlayElement.aboutFont)
 		
-		love.graphics.print(
-			"LoveAroundTheClock 0.1\nby Johannes Böhler 2026",
-			102 * overlayElement.scale, -- TODO
-			480 * overlayElement.scale -- TODO
-		)
-		
-		
-		love.graphics.setColor(r,g,b,a) -- We reset the color to the state before we draw the buttons
+		if not overlayElement.bottomText == false then
+			love.graphics.setFont(overlayElement.bottomFont)
+			love.graphics.print(
+				overlayElement.bottomText,
+				102 * overlayElement.scale, -- TODO
+				480 * overlayElement.scale -- TODO
+			)
+		end
 	end
+	
+	love.graphics.setColor(r,g,b,a) -- We reset the color to the state before we draw the overlay
 end
 
 
