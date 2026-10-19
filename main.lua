@@ -196,9 +196,10 @@ function love.load()
 	
 	clockBackground = love.graphics.newImage("assets/images/clock_background.png")
 	
-	clockWidget = clock:new(0, 0, clockBackground, settings.windowScale)
+	
+	clockWidget = clock:new(windowWidth / 2, windowHeight / 2, clockBackground, settings.windowScale)
 
-	overlayWidget = overlay:new()
+	overlayWidget = overlay:new(settings.windowScale)
 end
 
 function love.update(dt)

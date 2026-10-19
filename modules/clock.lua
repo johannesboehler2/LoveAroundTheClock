@@ -11,6 +11,7 @@ function clockModule:new(xCenter, yCenter, imgClockBackground, scale)
 	newClock.yCenter = yCenter
 	newClock.imgClockBackground = imgClockBackground
 	newClock.scale = scale
+	newClock.clockFaceBackgroundColor = {0.7, 0.7, 0.7}
 	
 	table.insert(clockList, newClock)
 	
@@ -29,74 +30,72 @@ function clockModule:draw() -- Put this in love.draw()
 	local r,g,b,a = love.graphics.getColor()
 
 	for i,clockElement in ipairs(clockList) do
-	
 		love.graphics.setColor(1, 1, 1)
-		
  	
 		love.graphics.draw(
 			newClock.imgClockBackground,
-			windowWidth / 2 - 0.5 * clockBackground:getWidth() / 2 * clockElement.scale,
-			windowHeight / 2 -0.5 * clockBackground:getHeight() / 2 * clockElement.scale,
+			clockElement.xCenter - 0.5 * clockBackground:getWidth() / 2 * clockElement.scale,
+			clockElement.yCenter - 0.5 * clockBackground:getHeight() / 2 * clockElement.scale,
 			0, 0.5 * clockElement.scale
 		)
 	
 	
 		-- Clock face
 
-		love.graphics.setColor(0.7, 0.7, 0.7)
+		love.graphics.setColor(newClock.clockFaceBackgroundColor)
 		love.graphics.circle(
 			"fill",
-			centerX,
-			centerY + settings.deepWidth * clockElement.scale / 2,
-			settings.clockRadius * clockElement.scale - 0.5
+			clockElement.xCenter,
+			clockElement.yCenter + settings.deepWidth * clockElement.scale / 2, -- TODO
+			settings.clockRadius * clockElement.scale - 0.5 -- TODO
 		)
 		love.graphics.circle(
 			"line",
-			centerX,
-			centerY + settings.deepWidth * clockElement.scale / 2,
-			settings.clockRadius * clockElement.scale
+			clockElement.xCenter,
+			clockElement.yCenter + settings.deepWidth * clockElement.scale / 2, -- TODO
+			settings.clockRadius * clockElement.scale -- TODO
 		)
 
 		love.graphics.setColor(1, 1, 1)
 		love.graphics.circle(
 			"fill",
-			centerX,
-			centerY - settings.deepWidth * clockElement.scale / 2,
-			settings.clockRadius * clockElement.scale - 0.5
+			clockElement.xCenter,
+			clockElement.yCenter - settings.deepWidth * clockElement.scale / 2, -- TODO
+			settings.clockRadius * clockElement.scale - 0.5 -- TODO
 		)
 		love.graphics.circle(
 			"line",
-			centerX,
-			centerY - settings.deepWidth * clockElement.scale / 2,
+			clockElement.xCenter,
+			clockElement.yCenter - settings.deepWidth * clockElement.scale / 2,
 			settings.clockRadius * clockElement.scale
 		)
 
 		love.graphics.setColor(Color("#b2262c")) -- TODO: get from settings
 		love.graphics.circle(
 			"fill",
-			centerX,
-			centerY - settings.deepWidth * clockElement.scale,
-			settings.clockRadius * clockElement.scale - settings.clockBorderWidth * clockElement.scale - 0.5
+			clockElement.xCenter,
+			clockElement.yCenter - settings.deepWidth * clockElement.scale,
+			settings.clockRadius * clockElement.scale - settings.clockBorderWidth * clockElement.scale - 0.5 -- TODO
 		)
 		love.graphics.circle(
 			"line",
-			centerX,
-			centerY - settings.deepWidth * clockElement.scale,
-			settings.clockRadius * clockElement.scale - settings.clockBorderWidth * clockElement.scale
+			clockElement.xCenter,
+			clockElement.yCenter - settings.deepWidth * clockElement.scale,
+			settings.clockRadius * clockElement.scale - settings.clockBorderWidth * clockElement.scale -- TODO
 		)
 
 		love.graphics.setColor(Color("#ed333b")) -- TODO: get from settings
 		love.graphics.circle(
 			"fill",
-			centerX,
-			centerY,
-			settings.clockRadius * clockElement.scale - settings.clockBorderWidth * clockElement.scale - 0.5
+			clockElement.xCenter,
+			clockElement.yCenter,
+			settings.clockRadius * clockElement.scale - settings.clockBorderWidth * clockElement.scale - 0.5 -- TODO
 		)
 		love.graphics.circle(
 			"line",
-			centerX,
-			centerY,
-			settings.clockRadius * clockElement.scale - settings.clockBorderWidth * clockElement.scale
+			clockElement.xCenter,
+			clockElement.yCenter,
+			settings.clockRadius * clockElement.scale - settings.clockBorderWidth * clockElement.scale -- TODO
 		)
 	
 	
@@ -114,10 +113,10 @@ function clockModule:draw() -- Put this in love.draw()
 				settings.clockRadius * clockElement.scale -
 				settings.clockBorderWidth * clockElement.scale
 			
-			local x1 = centerX + innerRadius * math.sin(angle)
-			local y1 = centerY - innerRadius * math.cos(angle)
-			local x2 = centerX + outerRadius * math.sin(angle)
-			local y2 = centerY - outerRadius * math.cos(angle)
+			local x1 = clockElement.xCenter + innerRadius * math.sin(angle)
+			local y1 = clockElement.yCenter - innerRadius * math.cos(angle)
+			local x2 = clockElement.xCenter + outerRadius * math.sin(angle)
+			local y2 = clockElement.yCenter - outerRadius * math.cos(angle)
 
 			if i % 15 == 0 then
 				love.graphics.setLineWidth(8 * clockElement.scale)
@@ -176,21 +175,21 @@ function clockModule:draw() -- Put this in love.draw()
 				settings.clockRadius * clockElement.scale -
 				settings.clockBorderWidth * clockElement.scale
 			) * 0.6
-		local hourX = centerX + hourLength * math.sin(hourAngle)
-		local hourY = centerY - hourLength * math.cos(hourAngle)
+		local hourX = clockElement.xCenter + hourLength * math.sin(hourAngle)
+		local hourY = clockElement.yCenter - hourLength * math.cos(hourAngle)
 
 		love.graphics.setLineWidth(12 * clockElement.scale)
 
 		love.graphics.setColor(0, 0, 0, 0.2)
 		love.graphics.line(
-			centerX + 3 * clockElement.scale,
-			centerY + 3 * clockElement.scale,
+			clockElement.xCenter + 3 * clockElement.scale,
+			clockElement.yCenter + 3 * clockElement.scale,
 			hourX + 3 * clockElement.scale,
 			hourY + 3 * clockElement.scale
 		)
 
 		love.graphics.setColor(1, 1, 1)
-		love.graphics.line(centerX, centerY, hourX, hourY)
+		love.graphics.line(clockElement.xCenter, clockElement.yCenter, hourX, hourY)
 		
 		
 		-- Minute hand
@@ -201,21 +200,21 @@ function clockModule:draw() -- Put this in love.draw()
 				settings.clockRadius * clockElement.scale -
 				settings.clockBorderWidth * clockElement.scale
 			) * 0.76
-		local minuteX = centerX + minuteLength * math.sin(minuteAngle)
-		local minuteY = centerY - minuteLength * math.cos(minuteAngle)
+		local minuteX = clockElement.xCenter + minuteLength * math.sin(minuteAngle)
+		local minuteY = clockElement.yCenter - minuteLength * math.cos(minuteAngle)
 
 		love.graphics.setLineWidth(6 * clockElement.scale)
 
 		love.graphics.setColor(0, 0, 0, 0.2)
 		love.graphics.line(
-			centerX + 3 * clockElement.scale,
-			centerY + 3 * clockElement.scale,
+			clockElement.xCenter + 3 * clockElement.scale,
+			clockElement.yCenter + 3 * clockElement.scale,
 			minuteX + 3 * clockElement.scale,
 			minuteY + 3 * clockElement.scale
 		)
 
 		love.graphics.setColor(1, 1, 1)
-		love.graphics.line(centerX, centerY, minuteX, minuteY)
+		love.graphics.line(clockElement.xCenter, clockElement.yCenter, minuteX, minuteY)
 		
 		
 		-- Second hand

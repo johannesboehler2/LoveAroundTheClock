@@ -8,7 +8,7 @@ local overlayModule = {} -- Here we store all the functions
 local overlayList = {} -- Here we store all the new overlays
 
 
-function overlayModule:new()
+function overlayModule:new(scale)
 	local newOverlay = {}
 	
 	newOverlay.opacity = 0
@@ -19,14 +19,17 @@ function overlayModule:new()
 	newOverlay.fadeIn = false
 	newOverlay.fadeOut = false
 	newOverlay.isOpen = false
+	newOverlay.scale = scale
 	newOverlay.font = love.graphics.newFont(
 		settings.overlayFontFamily,
-		28 * settings.windowScale
+		28 * newOverlay.scale
 	)
 	newOverlay.aboutFont = love.graphics.newFont(
 		settings.overlayFontFamily,
-		24 * settings.windowScale
+		24 * newOverlay.scale
 	)
+	
+	
 	
 	function newOverlay:open()
 		self.fadeIn = true
@@ -148,8 +151,8 @@ function overlayModule:draw() -- Put this in love.draw()
 		 	0,
 		 	0,
 		 	0,
-		 	0.5 * settings.windowScale, -- TODO
-		 	0.5 * settings.windowScale -- TODO
+		 	0.5 * overlayElement.scale,
+		 	0.5 * overlayElement.scale
 	 	)
 	 	
 	 	
@@ -180,28 +183,28 @@ function overlayModule:draw() -- Put this in love.draw()
 		 						
 			love.graphics.draw(
 			 	overlayMenuImage,
-			 	(settings.windowWidth * settings.windowScale - overlayMenuImage:getWidth() / 2 * settings.windowScale) / 2, -- TODO
-			 	(156 + (i - 1) * 62) * settings.windowScale, -- TODO
+			 	(settings.windowWidth * overlayElement.scale - overlayMenuImage:getWidth() / 2 * overlayElement.scale) / 2, -- TODO
+			 	(156 + (i - 1) * 62) * overlayElement.scale, -- TODO
 			 	0,
-			 	0.5 * settings.windowScale, -- TODO
-			 	0.5 * settings.windowScale -- TODO
+			 	0.5 * overlayElement.scale, 
+			 	0.5 * overlayElement.scale 
 		 	)
 		 	
 		 	love.graphics.print(
 				text,
-				102 * settings.windowScale, -- TODO
-				(168 + (i - 1) * 62) * settings.windowScale -- TODO
+				102 * overlayElement.scale, 
+				(168 + (i - 1) * 62) * overlayElement.scale -- TODO
 			)
 			
 			
 			if menuElement[2] then
 				love.graphics.draw(
 				 	toggleMenuImage,
-				 	(settings.windowWidth * settings.windowScale + overlayMenuImage:getWidth() / 2 * settings.windowScale - 126 * settings.windowScale) / 2, -- TODO
-				 	(161 + (i - 1) * 62) * settings.windowScale, -- TODO
+				 	(settings.windowWidth * overlayElement.scale + overlayMenuImage:getWidth() / 2 * overlayElement.scale - 126 * overlayElement.scale) / 2, -- TODO
+				 	(161 + (i - 1) * 62) * overlayElement.scale, -- TODO
 				 	0,
-				 	0.5 * settings.windowScale, -- TODO
-				 	0.5 * settings.windowScale -- TODO
+				 	0.5 * overlayElement.scale, 
+				 	0.5 * overlayElement.scale 
 			 	)
 		 	end
 		end
@@ -209,9 +212,9 @@ function overlayModule:draw() -- Put this in love.draw()
 		love.graphics.setFont(overlayElement.aboutFont)
 		
 		love.graphics.print(
-			"LoveAroundTheClock 0.1\nby Johannes Böhler",
-			102 * settings.windowScale, -- TODO
-			480 * settings.windowScale -- TODO
+			"LoveAroundTheClock 0.1\nby Johannes Böhler 2026",
+			102 * overlayElement.scale, -- TODO
+			480 * overlayElement.scale -- TODO
 		)
 		
 		
