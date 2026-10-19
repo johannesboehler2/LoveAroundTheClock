@@ -4,14 +4,14 @@ function in_bound(target, mx, my) --This one do math and allows you to create a 
 	return mx >= target.x and mx <= target.x + target.width and my >= target.y and my <= target.y + target.height
 end
 
-screen = { w= love.graphics.getWidth(), h= love.graphics.getHeight()} -- This help us to center the buttons
+screen = {w = love.graphics.getWidth(), h = love.graphics.getHeight()} -- This help us to center the buttons
 
-local button_module = {} -- Here we store all the functions
+local buttonModule = {} -- Here we store all the functions
 
-local button_module.buttons = {} -- Here we store all the new buttons
+local buttonModule.buttons = {} -- Here we store all the new buttons
 
 
-function button_module:new(x, y, scale, imgNormal, imgHover, funcClick, funcHover, text, textColor, textX, textY, center)
+function buttonModule:new(x, y, scale, imgNormal, imgHover, funcClick, funcHover, text, textColor, textX, textY, center)
 	-- Put this in love.load()
 	local newButton = {} -- We create a table and we create inside of it all the features we want for the button
 	newButton.x = x
@@ -34,13 +34,12 @@ function button_module:new(x, y, scale, imgNormal, imgHover, funcClick, funcHove
 	newButton.hover = false
 	newButton.hoverOpacity = 0
 
-	table.insert(button_module.buttons, newButton)
+	table.insert(buttonModule.buttons, newButton)
 end
 
 
-
-function button_module:update(dt) -- Put this in love.update()
-	for i,v in ipairs(button_module.buttons) do
+function buttonModule:update(dt) -- Put this in love.update()
+	for i,v in ipairs(buttonModule.buttons) do
 		local x,y = love.mouse.getPosition()
 		local leftClick = love.mouse.isDown(1)
 		local rightClick = love.mouse.isDown(2)
@@ -72,10 +71,10 @@ function button_module:update(dt) -- Put this in love.update()
 
 end
 
-function button_module:draw() -- Put this in love.draw()
+function buttonModule:draw() -- Put this in love.draw()
 	local r,g,b,a = love.graphics.getColor()
 
-	for i,v in ipairs(button_module.buttons) do
+	for i,v in ipairs(buttonModule.buttons) do
 		if v.center == true then -- if the center option is set on "true" then we center the button AND the text :D
 			--TODO: implement
 		else
@@ -135,8 +134,8 @@ function button_module:draw() -- Put this in love.draw()
 	end
 end
 
-function button_module:delete(btn)
+function buttonModule:delete(btn)
 	table.remove(buttons, btn.label)
 end
 
-return button_module
+return buttonModule
