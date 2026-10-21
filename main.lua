@@ -43,7 +43,7 @@ function love.load()
 	settings.windowWidth = 540
 	settings.windowHeight = 620
 	settings.windowScale = 0.667
-	settings.windowScale = 1.4
+	settings.windowScale = 2
 	--settings.windowScale = 1.85
 	settings.headlineFontFamily = "assets/fonts/GlacialIndifference-Regular.otf"
 	settings.headlineFontSize = 34 * settings.windowScale
@@ -52,12 +52,8 @@ function love.load()
 		settings.headlineFontSize
 	)
 	
-	settings.hoursFontFamily = "assets/fonts/GlacialIndifference-Regular.otf"
-	settings.hourNumbersFontSize = 24 * settings.windowScale
-	settings.hourNumbersFont = love.graphics.newFont(
-		settings.hoursFontFamily,
-		settings.hourNumbersFontSize
-	)
+	settings.clockFontFamily = "assets/fonts/GlacialIndifference-Regular.otf"
+	settings.clockFontSize = 28
 	
 	settings.headlineText = "Löve around the clock"
 	settings.backgroundColor = {0.2, 0.2, 0.2}
@@ -70,8 +66,8 @@ function love.load()
 	settings.fullscreen = false
 	settings.showHeadline = false
 	settings.showCompass = true
-	settings.showClock = false
-	settings.nightMode = true
+	settings.showClock = true
+	settings.nightMode = false
 	
 	
 	settings.smallFontFamily = "assets/fonts/GlacialIndifference-Regular.otf"
@@ -173,10 +169,17 @@ function love.load()
 		headlineTextWidget.text = "Clock"
 	end
     
-	geoTextWidget = text:new(190, 6, settings.headlineText, settings.smallFontFamily, settings.smallFontSize, settings.windowScale)
-	geoTextWidget:setText("47,50° N\n9,73° O")
-	geoTextWidget:setXY(12, 521)
-	geoTextWidget:setColor({0.76, 0.76, 0.76, 1})
+	geoLocationWidget = text:new(
+		190,
+		6,
+		settings.headlineText,
+		settings.smallFontFamily,
+		settings.smallFontSize,
+		settings.windowScale
+	)
+	geoLocationWidget:setText("47,50° N\n9,73° O")
+	geoLocationWidget:setXY(12, 521)
+	geoLocationWidget:setColor({0.76, 0.76, 0.76, 1})
     
     
 	if settings.showCompass then
@@ -189,6 +192,8 @@ function love.load()
 			settings.compassFontSize,
 			settings.windowScale
 		)
+		
+		compassWidget:setDegree(110)
 	end
 
 	
@@ -196,12 +201,24 @@ function love.load()
 	
 	
 	clockBackground = love.graphics.newImage("assets/images/clock_background.png")
-	clockWidget = clock:new(windowWidth / 2, windowHeight / 2, clockBackground, settings.windowScale)
+	
+	clockWidget = clock:new(
+		windowWidth / 2,
+		windowHeight / 2,
+		clockBackground,
+		settings.clockFontFamily,
+		settings.clockFontSize,
+		settings.windowScale * 0.91 -- 0.91 /  1.25 (with compass / without compass)
+	)
+	
+	--clockWidget.scale = 0.1
+	--clockWidget.finalScale = settings.windowScale * 0.91
 
 	overlayWidget = overlay:new(
 		settings.windowScale,
 		love.graphics.newImage("assets/images/menu_button_rectangle_normal.png"),
 		love.graphics.newImage("assets/images/menu_button_rectangle_arrow.png"),
+		love.graphics.newImage("assets/images/toggle.png"),
 		{
 			{
 				"Uhr anzeigen", -- Text TODO make it smarter
@@ -270,12 +287,23 @@ function love.update(dt)
 		end
 		
 		if key == "f3" and isrepeat == false then
+			if settings.showCompass then
+				settings.showCompass = false
+			else
+				settings.showCompass = true
+			end
+			
+			--TODO set clock scale
+		end
+		
+		if key == "f9" and isrepeat == false then
 			if settings.showGamepad then
 				settings.showGamepad = false
 			else
 				settings.showGamepad = true
 			end
 		end
+
 		
 		if key == "f10" and isrepeat == false then
 			overlayWidget:toggle()
@@ -284,24 +312,59 @@ function love.update(dt)
 		print(key)
 	end
 	
-	
 	local joysticks = love.joystick.getJoysticks()
 	gamepad = joysticks[1]
 	
 	if gamepad then
 		if gamepad:isDown(10) then
-			if gamepadButtonPressed == false then 
+			if gamepadButtonPressed10 == false then 
 				overlayWidget:toggle()
 			end
-			gamepadButtonPressed = true
+			gamepadButtonPressed10 = true
 		else
-			gamepadButtonPressed = false
+			gamepadButtonPressed10 = false
+		end
+		
+		if gamepad:isDown(4) then
+			if gamepadButtonPressed4 == false then 
+				if settings.showClock then
+					settings.showClock = false
+				else
+					settings.showClock = true
+				end
+			end
+			gamepadButtonPressed4 = true
+		else
+			gamepadButtonPressed4 = false
+		end
+		
+		if gamepad:isDown(1) then
+			if gamepadButtonPressed1 == false then 
+				if settings.showCompass then
+					settings.showCompass = false
+				else
+					settings.showCompass = true
+				end
+			end
+			gamepadButtonPressed1 = true
+		else
+			gamepadButtonPressed1 = false
 		end
 	end
 	
 
 	-- Current time
 	currentTime = os.date("*t")
+	
+	
+	if settings.showClock and settings.showCompass == false then
+		clockWidget:setScale(1.15 * settings.windowScale) -- 1.25
+	end
+	
+	if settings.showClock and settings.showCompass then
+		clockWidget:setScale(0.91 * settings.windowScale)
+	end
+	
 	
 	button:update(dt)
 	text:update(dt)
@@ -348,7 +411,11 @@ function love.draw()
  	
  	button:draw()
 	text:draw()
-	compass:draw()
+	
+	
+	if settings.showCompass then
+		compass:draw()
+	end
 	
 	if settings.showClock then
 		clock:draw()
@@ -375,8 +442,9 @@ function love.draw()
 	end
 	
 	overlay:draw()
+	
+	--print(love.window.isVisible( ))
 end
-
 
 function setImages()
 	if settings.nightMode then

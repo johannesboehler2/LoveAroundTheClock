@@ -8,7 +8,7 @@ local overlayModule = {} -- Here we store all the functions
 local overlayList = {} -- Here we store all the new overlays
 
 
-function overlayModule:new(scale, imgNormal, imgNormalArrow, menuList, bottomText)
+function overlayModule:new(scale, imgNormal, imgNormalArrow, imgToggle, menuList, bottomText)
 	local newOverlay = {}
 	
 	newOverlay.opacity = 0
@@ -22,6 +22,7 @@ function overlayModule:new(scale, imgNormal, imgNormalArrow, menuList, bottomTex
 	newOverlay.scale = scale
 	newOverlay.imgNormal = imgNormal
 	newOverlay.imgNormalArrow = imgNormalArrow
+	newOverlay.imgToggle = imgToggle
 	newOverlay.menuList = menuList
 	newOverlay.bottomText = bottomText or false
 	newOverlay.font = love.graphics.newFont(
@@ -53,7 +54,6 @@ function overlayModule:new(scale, imgNormal, imgNormalArrow, menuList, bottomTex
 	end
 	
 	
-	
 	table.insert(overlayList, newOverlay)
 	
 	
@@ -63,7 +63,6 @@ end
 function overlayModule:update(dt) -- Put this in love.update()
 	for i,overlayElement in ipairs(overlayList) do
         	overlayElement.time = overlayElement.time + dt 
-        	
         	
         	
         	--if overlayElement.time > overlayElement.openAfter and overlayElement.time < overlayElement.openAfter + 1 + overlayElement.closeAfter and overlayElement.fadeOut == false then
@@ -143,8 +142,6 @@ function overlayModule:draw() -- Put this in love.draw()
 		 		overlayMenuImage = overlayElement.imgNormal
 		 	end
 		 	
-		 	toggleMenuImage = love.graphics.newImage("assets/images/toggle.png") -- TODO refactor for performance
-		 	
 		 	
 		 	if menuElement[4] then
 		 		love.graphics.setColor(1, 1, 1, overlayElement.opacity)
@@ -155,7 +152,10 @@ function overlayModule:draw() -- Put this in love.draw()
 		 						
 			love.graphics.draw(
 			 	overlayMenuImage,
-			 	(settings.windowWidth * overlayElement.scale - overlayMenuImage:getWidth() / 2 * overlayElement.scale) / 2, -- TODO
+			 	(
+			 		settings.windowWidth * overlayElement.scale -
+			 		overlayMenuImage:getWidth() / 2 * overlayElement.scale
+		 		) / 2,-- TODO
 			 	(156 + (i - 1) * 62) * overlayElement.scale, -- TODO
 			 	0,
 			 	0.5 * overlayElement.scale, 
@@ -171,7 +171,7 @@ function overlayModule:draw() -- Put this in love.draw()
 			
 			if menuElement[2] then
 				love.graphics.draw(
-				 	toggleMenuImage,
+				 	overlayElement.imgToggle,
 				 	(settings.windowWidth * overlayElement.scale + overlayMenuImage:getWidth() / 2 * overlayElement.scale - 126 * overlayElement.scale) / 2, -- TODO
 				 	(161 + (i - 1) * 62) * overlayElement.scale, -- TODO
 				 	0,

@@ -1,6 +1,4 @@
 function drawGamepad()
-	-- TODO Gamepad function as import
-
 	x = 30 * settings.windowScale 
 	y = 185 * settings.windowScale
 	

@@ -75,7 +75,8 @@ function buttonModule:draw() -- Put this in love.draw()
 	local r,g,b,a = love.graphics.getColor()
 
 	for i,v in ipairs(buttonModule.buttons) do
-		if v.center == true then -- if the center option is set on "true" then we center the button AND the text :D
+		if v.center == true then
+			-- if the center option is set on "true" then we center the button AND the text :D
 			--TODO: implement
 		else
 		    	love.graphics.setColor(1,1,1)

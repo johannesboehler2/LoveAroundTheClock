@@ -5,8 +5,8 @@ local compassModule = {} -- Here we store all the functions
 local compassList = {} -- Here we store all the new buttons
 
 
-function compassModule:new(xCenter, yCenter, imgCompassBackground, imgCompass, fontFamily, fontSize, scale) -- Put this in love.load()
-	newCompass = {} -- We create a table and we create inside of it all the features we want for the compass
+function compassModule:new(xCenter, yCenter, imgCompassBackground, imgCompass, fontFamily, fontSize, scale)
+	newCompass = {}
 	newCompass.xCenter = xCenter
 	newCompass.yCenter = yCenter
 	newCompass.degree = 0
@@ -19,6 +19,11 @@ function compassModule:new(xCenter, yCenter, imgCompassBackground, imgCompass, f
 		newCompass.fontFamily,
 		newCompass.fontSize * newCompass.scale
 	)
+	
+	
+	function newCompass:setDegree(degree)
+		self.degree = degree
+	end
 
 	table.insert(compassList, newCompass)
 	
@@ -27,8 +32,11 @@ function compassModule:new(xCenter, yCenter, imgCompassBackground, imgCompass, f
 end
 
 function compassModule:update(dt) -- Put this in love.update()
-	for i,compassElement in ipairs(compassList) do
- 		compassElement.degree = compassElement.degree + 10 * dt -- 20 ° / sek
+	for i, compassElement in ipairs(compassList) do
+		-- TODO get real data at this point!
+	
+		-- TODO Remove after we get real data
+ 		compassElement.degree = compassElement.degree + 5 * dt -- 10 ° / sek
  		
  		if compassElement.degree >= 359.5 then
  			if compassElement.degree > 359.5 and compassElement.degree < 360 then
@@ -37,9 +45,7 @@ function compassModule:update(dt) -- Put this in love.update()
  				compassElement.degree = 0
  			end
 		end
-        	
 	end
-
 end
 
 function compassModule:draw() -- Put this in love.draw()
@@ -47,6 +53,9 @@ function compassModule:draw() -- Put this in love.draw()
 
 	for i,compassElement in ipairs(compassList) do
 	 	love.graphics.setColor(1, 1, 1, 1)
+	 	
+	 	
+	 	-- Compass background image
 	 	
 	 	love.graphics.draw(
 	 		compassElement.imgCompassBackground,
@@ -59,6 +68,8 @@ function compassModule:draw() -- Put this in love.draw()
 	 		compassElement.imgCompassBackground:getHeight() / 2
 		)
 		
+		
+		-- Compass image
 		
 	 	love.graphics.setColor(1, 1, 1, 1)
 	 	
@@ -113,7 +124,6 @@ function compassModule:draw() -- Put this in love.draw()
 			(13) * compassElement.scale,
 			compassElement.yCenter - 268 * compassElement.scale
 		)
-		
 	end
 end
 
