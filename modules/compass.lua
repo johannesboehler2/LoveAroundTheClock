@@ -15,6 +15,7 @@ function compassModule:new(xCenter, yCenter, imgCompassBackground, imgCompass, f
 	newCompass.fontFamily = fontFamily
 	newCompass.fontSize = fontSize
 	newCompass.scale = scale
+	newCompass.finalScale = scale
 	newCompass.font = love.graphics.newFont(
 		newCompass.fontFamily,
 		newCompass.fontSize * newCompass.scale
@@ -24,6 +25,21 @@ function compassModule:new(xCenter, yCenter, imgCompassBackground, imgCompass, f
 	function newCompass:setDegree(degree)
 		self.degree = degree
 	end
+	
+	function newCompass:setFont()
+		self.font = love.graphics.newFont(
+			self.fontFamily,
+			self.fontSize * self.scale
+		)
+	end
+	
+	function newCompass:setScale(scale)
+		self.finalScale = scale
+		self:setFont() -- Reinit font for font size
+	end
+	
+	newCompass:setFont()
+	
 
 	table.insert(compassList, newCompass)
 	
@@ -92,19 +108,19 @@ function compassModule:draw() -- Put this in love.draw()
 		fontHeight = love.graphics:getFont():getHeight()
 		fontWidth = love.graphics:getFont():getWidth(compassDegreeRounded)
 		
-		love.graphics.setColor(0, 0, 0, 1)
-		love.graphics.print(
-			compassDegreeRounded,
-			compassElement.xCenter - fontWidth / 2 - 1 * compassElement.scale,
-			compassElement.yCenter - 299 * compassElement.scale - 1 * compassElement.scale
-		)
+		-- love.graphics.setColor(0, 0, 0, 1)
+		-- love.graphics.print(
+		-- 	compassDegreeRounded,
+		-- 	compassElement.xCenter - fontWidth / 2 - 1 * compassElement.scale,
+		-- 	compassElement.yCenter - 299 * compassElement.scale - 1 * compassElement.scale
+		-- )
 		
-		love.graphics.setColor(0.76, 0.76, 0.76, 1)
-		love.graphics.print(
-			compassDegreeRounded,
-			compassElement.xCenter - fontWidth / 2 ,
-			compassElement.yCenter - 299 * compassElement.scale
-		)
+		-- love.graphics.setColor(0.76, 0.76, 0.76, 1)
+		-- love.graphics.print(
+		-- 	compassDegreeRounded,
+		-- 	compassElement.xCenter - fontWidth / 2 ,
+		-- 	compassElement.yCenter - 299 * compassElement.scale
+		-- )
 		
 		
 		--Can I change the font size -- TODO scale with the compass
