@@ -25,6 +25,15 @@ function Color(hex, value)
 	}
 end
 
+function ColorFromRGBA(r, g, b, a)
+	return {
+		1 / 255 * r,
+		1 / 255 * g,
+		1 / 255 * b,
+		a or 1
+	}
+end
+
 
 function love.load()
 	-- TODO
