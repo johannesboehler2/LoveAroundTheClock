@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="120"
+   height="120"
+   viewBox="0 0 31.749996 31.749997"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   sodipodi:docname="menu_button_simple_orange.svg"
+   inkscape:export-filename="menu_button_simple_orange.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="true"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="4"
+     inkscape:cx="33.5"
+     inkscape:cy="56.875"
+     inkscape:window-width="1920"
+     inkscape:window-height="936"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="true">
+    <sodipodi:guide
+       position="8.2085145,8.3171432"
+       orientation="1,0"
+       id="guide17"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="23.549784,8.3171432"
+       orientation="1,0"
+       id="guide18"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient8"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#d02d2d;stop-opacity:1;"
+         offset="0"
+         id="stop7" />
+      <stop
+         style="stop-color:#711a1c;stop-opacity:1;"
+         offset="1"
+         id="stop8" />
+    </linearGradient>
+    <filter
+       style="color-interpolation-filters:sRGB"
+       inkscape:label="Blur"
+       id="filter17"
+       x="-0.04535433"
+       y="-0.04535433"
+       width="1.0907087"
+       height="1.0907087">
+      <feGaussianBlur
+         stdDeviation="0.5 0.5"
+         result="blur"
+         id="feGaussianBlur17" />
+    </filter>
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Blur"
+       id="filter5"
+       x="-0.060641205"
+       y="-0.060641205"
+       width="1.1212824"
+       height="1.1212824">
+      <feGaussianBlur
+         stdDeviation="0.6 0.6"
+         result="blur"
+         id="feGaussianBlur5" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient8"
+       id="linearGradient7"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.96363639,0,0,0.96363639,1.8520844,1.8520834)"
+       x1="23.254799"
+       y1="31.172846"
+       x2="6.2060356"
+       y2="-1.7120098" />
+  </defs>
+  <g
+     inkscape:label="Button normal"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="fill:#fa640d;fill-opacity:1;stroke:none;stroke-width:0.49124;paint-order:markers fill stroke"
+       id="path1"
+       cx="15.874999"
+       cy="15.874999"
+       r="14.552082" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Button hover"
+     style="display:none">
+    <rect
+       style="font-variation-settings:'opsz' 32, 'wght' 800;fill:url(#linearGradient7);fill-opacity:1;stroke-width:0.472903"
+       id="rect1-9"
+       width="28.045834"
+       height="28.045834"
+       x="1.8520831"
+       y="1.8520831"
+       rx="6.5990195"
+       ry="6.5990195" />
+  </g>
+  <rect
+     style="fill:#ffffff;fill-opacity:1;stroke-width:0.230128;stroke-opacity:0.16;paint-order:stroke fill markers"
+     id="rect2"
+     width="15.345832"
+     height="2.7781248"
+     x="8.2020826"
+     y="8.6745024"
+     rx="1.0403955"
+     ry="1.0102272" />
+  <rect
+     style="fill:#ffffff;fill-opacity:1;stroke-width:0.230129;stroke-opacity:0.16;paint-order:stroke fill markers"
+     id="rect2-3"
+     width="15.345832"
+     height="2.7781248"
+     x="8.2020826"
+     y="14.384277"
+     rx="1.0403955"
+     ry="1.010227" />
+  <rect
+     style="fill:#ffffff;fill-opacity:1;stroke-width:0.230129;stroke-opacity:0.16;paint-order:stroke fill markers"
+     id="rect2-3-1"
+     width="15.345832"
+     height="2.7781248"
+     x="8.2020826"
+     y="20.186228"
+     rx="1.0403955"
+     ry="1.010227" />
+</svg>
