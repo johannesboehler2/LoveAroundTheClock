@@ -83,16 +83,13 @@ function love.load()
 	
 	buttonNightLightWidget = button:new(
 		settings.windowWidth * settings.windowScale - 68 * settings.windowScale, -- X
-		settings.windowHeight * settings.windowScale - 68 * settings.windowScale, -- Y
+		settings.windowHeight * settings.windowScale - 60 * settings.windowScale, -- Y
 		0.5 * settings.windowScale, -- Scale (the image has double size)
 		menuButtonImageNormal,
 		menuButtonImageHover,
 		function() -- Button's function
 		    --print("Hello")
 		    overlayWidget:toggle()
-		end,
-		function() -- Button's function
-		    --print("Hover")
 		end
 	)
 
