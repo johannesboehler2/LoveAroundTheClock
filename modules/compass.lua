@@ -107,34 +107,12 @@ function compassModule:draw() -- Put this in love.draw()
 		
 		fontHeight = love.graphics:getFont():getHeight()
 		fontWidth = love.graphics:getFont():getWidth(compassDegreeRounded)
-		
-		-- love.graphics.setColor(0, 0, 0, 1)
-		-- love.graphics.print(
-		-- 	compassDegreeRounded,
-		-- 	compassElement.xCenter - fontWidth / 2 - 1 * compassElement.scale,
-		-- 	compassElement.yCenter - 299 * compassElement.scale - 1 * compassElement.scale
-		-- )
-		
-		-- love.graphics.setColor(0.76, 0.76, 0.76, 1)
-		-- love.graphics.print(
-		-- 	compassDegreeRounded,
-		-- 	compassElement.xCenter - fontWidth / 2 ,
-		-- 	compassElement.yCenter - 299 * compassElement.scale
-		-- )
+
 		
 		
 		--Can I change the font size -- TODO scale with the compass
 		
-		love.graphics.setFont(compassElement.font) -- TODO
-		
-		love.graphics.setColor(0, 0, 0, 1)
-		love.graphics.print(
-			compassDegreeRounded,
-			(13 - 1) * compassElement.scale,
-			compassElement.yCenter - 268 * compassElement.scale - 1 * compassElement.scale
-		)
-		
-		love.graphics.setColor(0.76, 0.76, 0.76, 1)
+		love.graphics.setColor(1, 1, 1, 1)
 		love.graphics.print(
 			compassDegreeRounded,
 			(13) * compassElement.scale,
