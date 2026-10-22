@@ -38,6 +38,11 @@ function compassModule:new(xCenter, yCenter, imgCompassBackground, imgCompass, f
 		self:setFont() -- Reinit font for font size
 	end
 	
+	function newCompass:setImages(imgCompassBackground, imgCompass)
+		self.imgCompassBackground = imgCompassBackground
+		self.imgCompass = imgCompass
+	end
+	
 	newCompass:setFont()
 	
 
