@@ -20,6 +20,12 @@ function clockModule:new(xCenter, yCenter, imgClockBackground, fontFamily, fontS
 	newClock.clockInnerShadowColor = {0.69, 0.15, 0.17}
 	newClock.clockBackgroundColor = {0.93, 0.2, 0.23}
 	
+	newClock.clockHandShadowColor = {0, 0, 0, 0.2}
+	newClock.clockHandColor = {1, 1, 1}
+	
+	-- TODO
+	-- Color of the minute / hour mark lines
+	
 	newClock.deepWidth = deepWidth or 4
 	newClock.clockRadius = clockRadius or 202
 	newClock.clockBorderWidth = clockBorderWidth or 15
@@ -221,7 +227,7 @@ function clockModule:draw() -- Put this in love.draw()
 
 		love.graphics.setLineWidth(12 * clockElement.scale)
 
-		love.graphics.setColor(0, 0, 0, 0.2)
+		love.graphics.setColor(clockElement.clockHandShadowColor)
 		love.graphics.line(
 			clockElement.xCenter + 3 * clockElement.scale,
 			clockElement.yCenter + 3 * clockElement.scale,
@@ -229,7 +235,7 @@ function clockModule:draw() -- Put this in love.draw()
 			hourY + 3 * clockElement.scale
 		)
 
-		love.graphics.setColor(1, 1, 1)
+		love.graphics.setColor(clockElement.clockHandColor)
 		love.graphics.line(clockElement.xCenter, clockElement.yCenter, hourX, hourY)
 		
 		
@@ -246,7 +252,7 @@ function clockModule:draw() -- Put this in love.draw()
 
 		love.graphics.setLineWidth(6 * clockElement.scale)
 
-		love.graphics.setColor(0, 0, 0, 0.2)
+		love.graphics.setColor(clockElement.clockHandShadowColor)
 		love.graphics.line(
 			clockElement.xCenter + 3 * clockElement.scale,
 			clockElement.yCenter + 3 * clockElement.scale,
@@ -254,7 +260,7 @@ function clockModule:draw() -- Put this in love.draw()
 			minuteY + 3 * clockElement.scale
 		)
 
-		love.graphics.setColor(1, 1, 1)
+		love.graphics.setColor(clockElement.clockHandShadowColor)
 		love.graphics.line(clockElement.xCenter, clockElement.yCenter, minuteX, minuteY)
 		
 		
@@ -271,7 +277,7 @@ function clockModule:draw() -- Put this in love.draw()
 
 		love.graphics.setLineWidth(2 * clockElement.scale)
 
-		love.graphics.setColor(0, 0, 0, 0.2)
+		love.graphics.setColor(clockElement.clockHandColor)
 		love.graphics.line(
 			centerX + 3 * clockElement.scale,
 			centerY + 3 * clockElement.scale,
@@ -293,14 +299,13 @@ function clockModule:draw() -- Put this in love.draw()
 			18 * clockElement.scale
 		)
 
-		love.graphics.setColor(1, 1, 1)
+		love.graphics.setColor(clockElement.clockHandColor)
 		love.graphics.circle("fill", centerX, centerY, 15 * clockElement.scale)
 
 		love.graphics.setLineWidth(2 * clockElement.scale)
-		love.graphics.setColor(1, 1, 1)
 		love.graphics.circle("line", centerX, centerY, 15 * clockElement.scale)
 
-		love.graphics.setColor(Color("#ed333b"))
+		love.graphics.setColor(clockElement.clockBackgroundColor)
 		love.graphics.circle("line", centerX, centerY, 3 * clockElement.scale)
 	end
 	
