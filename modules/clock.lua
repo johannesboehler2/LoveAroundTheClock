@@ -260,7 +260,7 @@ function clockModule:draw() -- Put this in love.draw()
 			minuteY + 3 * clockElement.scale
 		)
 
-		love.graphics.setColor(clockElement.clockHandShadowColor)
+		love.graphics.setColor(clockElement.clockHandColor)
 		love.graphics.line(clockElement.xCenter, clockElement.yCenter, minuteX, minuteY)
 		
 		
@@ -277,7 +277,7 @@ function clockModule:draw() -- Put this in love.draw()
 
 		love.graphics.setLineWidth(2 * clockElement.scale)
 
-		love.graphics.setColor(clockElement.clockHandColor)
+		love.graphics.setColor(clockElement.clockHandShadowColor)
 		love.graphics.line(
 			centerX + 3 * clockElement.scale,
 			centerY + 3 * clockElement.scale,
@@ -285,7 +285,7 @@ function clockModule:draw() -- Put this in love.draw()
 			secondY + 3 * clockElement.scale
 		)
 
-		love.graphics.setColor(1, 1, 1)
+		love.graphics.setColor(clockElement.clockHandColor)
 		love.graphics.line(centerX, centerY, secondX, secondY)
 		
 		
