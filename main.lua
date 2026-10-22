@@ -204,9 +204,6 @@ function love.load()
 		
 		compassWidget:setDegree(110)
 	end
-
-	
-	backgroundImage002 = love.graphics.newImage("assets/images/Winsch_Comet.png")
 	
 	
 	clockBackground = love.graphics.newImage("assets/images/clock_background.png")
