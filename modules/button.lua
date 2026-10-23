@@ -6,12 +6,12 @@ end
 
 screen = { w= love.graphics.getWidth(), h= love.graphics.getHeight()} -- This help us to center the buttons
 
-local button_module = {} -- Here we store all the functions
+local buttonModule = {} -- Here we store all the functions
 
 local buttons = {} -- Here we store all the new buttons
 
 
-function button_module:new(x, y, scale, imgNormal, imgHover, funcClick, funcHover, text, textColor, textX, textY, center)
+function buttonModule:new(x, y, scale, imgNormal, imgHover, funcClick, funcHover, text, textColor, textX, textY, center)
 	-- Put this in love.load()
 	newButton = {}
 	newButton.x = x
@@ -49,32 +49,37 @@ end
 
 
 
-function button_module:update(dt) -- Put this in love.update()
-	for i,v in ipairs(buttons) do
-		local x,y = love.mouse.getPosition()
+function buttonModule:update(dt) -- Put this in love.update()
+	for i, buttonElement in ipairs(buttons) do
+		local x, y = love.mouse.getPosition()
 		local leftClick = love.mouse.isDown(1)
 		local rightClick = love.mouse.isDown(2)
-		local inBound = in_bound(v, x, y)
+		local inBound = in_bound(buttonElement, x, y)
 
 		if inBound and leftClick then
-			v.funcClick()
+			if buttonElement.clicked == false then
+				buttonElement.funcClick()
+			end
+			buttonElement.clicked = true
+		else
+			buttonElement.clicked = false
 		end
 		
 		if inBound then
-        		v.funcHover()
+        		buttonElement.funcHover()
         		
-        		v.hover = true
-        		v.hoverOpacity = v.hoverOpacity + 1 / (0.15 / dt) -- 0.15s
-        		if v.hoverOpacity > 1 then
-        			v.hoverOpacity = 1
+        		buttonElement.hover = true
+        		buttonElement.hoverOpacity = buttonElement.hoverOpacity + 1 / (0.15 / dt) -- 0.15s
+        		if buttonElement.hoverOpacity > 1 then
+        			buttonElement.hoverOpacity = 1
     			end
         	else
-        		v.hover = false
+        		buttonElement.hover = false
         		
-        		v.hoverOpacity = v.hoverOpacity - 1 / (0.15 / dt) -- 0.15s
+        		buttonElement.hoverOpacity = buttonElement.hoverOpacity - 1 / (0.15 / dt) -- 0.15s
         		
-        		if v.hoverOpacity < 0 then
-        			v.hoverOpacity = 0
+        		if buttonElement.hoverOpacity < 0 then
+        			buttonElement.hoverOpacity = 0
     			end
 		end
         	
@@ -82,64 +87,63 @@ function button_module:update(dt) -- Put this in love.update()
 
 end
 
-function button_module:draw() -- Put this in love.draw()
+function buttonModule:draw() -- Put this in love.draw()
 	local r, g, b, a = love.graphics.getColor()
 
 
-	-- TODO rename from v to buttonElement
-	for i, v in ipairs(buttons) do
-		if v.center == true then
+	for i, buttonElement in ipairs(buttons) do
+		if buttonElement.center == true then
 			--TODO: implement
 		else
 		    	love.graphics.setColor(1,1,1)
 		    	
-		    	if v.hover then
+		    	if buttonElement.hover then
 				love.graphics.draw(
-				 	v.imgNormal,
-				 	v.x,
-				 	v.y,
+				 	buttonElement.imgNormal,
+				 	buttonElement.x,
+				 	buttonElement.y,
 				 	0,
-				 	v.scale,
-				 	v.scale
+				 	buttonElement.scale,
+				 	buttonElement.scale
 			 	)
             	
-            			love.graphics.setColor(1,1,1, v.hoverOpacity)
+            			love.graphics.setColor(1,1,1, buttonElement.hoverOpacity)
             	
 				love.graphics.draw(
-				 	v.imgHover,
-				 	v.x,
-				 	v.y,
+				 	buttonElement.imgHover,
+				 	buttonElement.x,
+				 	buttonElement.y,
 				 	0,
-				 	v.scale,
-				 	v.scale
+				 	buttonElement.scale,
+				 	buttonElement.scale
 			 	)
 			else
 				love.graphics.draw(
-				 	v.imgNormal,
-				 	v.x,
-				 	v.y,
+				 	buttonElement.imgNormal,
+				 	buttonElement.x,
+				 	buttonElement.y,
 				 	0,
-				 	v.scale,
-				 	v.scale
+				 	buttonElement.scale,
+				 	buttonElement.scale
 			 	)
 			 	
-			 	if v.hoverOpacity > 0 then
-		        		love.graphics.setColor(1,1,1, v.hoverOpacity)
+			 	if buttonElement.hoverOpacity > 0 then
+		        		love.graphics.setColor(1,1,1, buttonElement.hoverOpacity)
 		        	
 					love.graphics.draw(
-					 	v.imgHover,
-					 	v.x,
-					 	v.y,
+					 	buttonElement.imgHover,
+					 	buttonElement.x,
+					 	buttonElement.y,
 					 	0,
-					 	v.scale,
-					 	v.scale
+					 	buttonElement.scale,
+					 	buttonElement.scale
 				 	)
 				end
 		 	end
 		 	
-			if not v.text == false then
-				love.graphics.setColor(v.textColor)
-				love.graphics.print(v.text, v.x + v.textX, v.y + v.textY)	
+			if not buttonElement.text == false then
+				love.graphics.setColor(buttonElement.textColor)
+				love.graphics.print(buttonElement.text, buttonElement.x + buttonElement.textX, buttonElement.y + buttonElement.textY)	
 			end
 		end
 	end
@@ -147,8 +151,8 @@ function button_module:draw() -- Put this in love.draw()
 	love.graphics.setColor(r, g, b, a) -- We reset the color to the state before we draw the buttons
 end
 
-function button_module:delete(btn)
+function buttonModule:delete(btn)
 	table.remove(buttons, btn.label)
 end
 
-return button_module
+return buttonModule

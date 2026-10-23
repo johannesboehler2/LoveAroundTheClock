@@ -34,8 +34,6 @@ end
 
 function love.load()
 	-- TODO
-	-- Optimize code
-	-- Add night mode
 	-- visible = love.window.isVisible( )
 	-- Do not redraw if the display is off
 	
@@ -87,6 +85,8 @@ function love.load()
 		function() -- Button's function
 			-- Toggle night mode
 			toggleNightMode()
+		end,
+		function() -- Button's hover function
 		end
 	)
 
@@ -108,13 +108,13 @@ end
 function love.update(dt)
 	durationSinceLastSecond = durationSinceLastSecond + dt;
 	
-	-- Execute every second
+	-- Execute every 0.6 seconds
 	if durationSinceLastSecond > 0.6 then
 		fps = 1 / dt
 		durationSinceLastSecond = 0
 	end
 	
-	-- Quit the game
+	-- Quit the app
 	if love.keyboard.isDown("escape") then
 		love.event.quit()
 	end
@@ -161,10 +161,10 @@ end
 function toggleNightMode()
 	if settings.nightMode then
 		settings.nightMode = false
-		widgets.compassWidget:setFontColor(ColorFromRGBA(255, 255, 255)) -- TODO
+		widgets.compassWidget:setFontColor(ColorFromRGBA(255, 255, 255)) -- TODO make vars
 	else
 		settings.nightMode = true
-		widgets.compassWidget:setFontColor(ColorFromRGBA(255, 0, 0)) -- TODO
+		widgets.compassWidget:setFontColor(ColorFromRGBA(255, 0, 0)) -- TODO make vars
 	end
 	
 	setImages()
