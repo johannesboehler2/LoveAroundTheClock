@@ -44,17 +44,15 @@ function love.load()
 	settings.windowWidth = 540
 	settings.windowHeight = 580
 	settings.windowScale = 0.667
-	settings.windowScale = 2
+	settings.windowScale = 1.6
 	--settings.windowScale = 1.85
-	
-	settings.backgroundColor = {0, 0, 0}
+	settings.backgroundColor = ColorFromRGBA(0, 0, 0)
 	settings.borderless = false
-
 	settings.showFPS = false
 	settings.nightMode = false
-	
 	settings.compassFontFamily = "assets/fonts/GeistMono-VariableFont_wght.ttf"
 	settings.compassFontSize = 42
+	settings.fontColor = ColorFromRGBA(255, 255, 255)
 	
 	
 	love.window.setMode(
@@ -70,48 +68,48 @@ function love.load()
 	
 	love.window.setTitle("Mecha Comet Compass")
 	
-	setImages()
-
-	love.graphics.setBackgroundColor(settings.backgroundColor)
-
-	
 	windowWidth, windowHeight = love.window.getMode()
-	
-	-- Display center
 	centerX, centerY = windowWidth / 2, windowHeight / 2
 
+	love.graphics.setBackgroundColor(settings.backgroundColor)
 	
-	buttonNightLightWidget = button:new(
+	widgets = {}
+	
+	setImages()
+
+	
+	widgets.buttonNightModeWidget = button:new(
 		settings.windowWidth * settings.windowScale - 68 * settings.windowScale, -- X
 		settings.windowHeight * settings.windowScale - 60 * settings.windowScale, -- Y
 		0.5 * settings.windowScale, -- Scale (the image has double size)
-		menuButtonImageNormal,
-		menuButtonImageHover,
+		buttonNightModeImage,
+		buttonNightModeImage,
 		function() -- Button's function
-		    --print("Hello")
-		    overlayWidget:toggle()
+			-- Toggle night mode
+			toggleNightMode()
 		end
 	)
 
 	
-	compassWidget = compass:new(
+	widgets.compassWidget = compass:new(
 		windowWidth / 2,
 		windowHeight / 2,
 		compassBackgroundImage,
 		compassImage,
 		settings.compassFontFamily,
 		settings.compassFontSize,
+		{1, 1, 1}, -- TODO
 		settings.windowScale
 	)
 	
-	compassWidget:setDegree(110)
+	widgets.compassWidget:setDegree(110)
 end
 
 function love.update(dt)
 	durationSinceLastSecond = durationSinceLastSecond + dt;
 	
 	-- Execute every second
-	if durationSinceLastSecond > 1 then
+	if durationSinceLastSecond > 0.6 then
 		fps = 1 / dt
 		durationSinceLastSecond = 0
 	end
@@ -129,8 +127,11 @@ function love.update(dt)
 				settings.showFPS = true
 			end
 		end
+		
+		if key == "f2" and isrepeat == false then
+			toggleNightMode()
+		end
 	end
-
 	
 	
 	button:update(dt)
@@ -139,13 +140,9 @@ function love.update(dt)
 end
 
 function love.draw()
-	love.graphics.setColor(Color("#ffffff"))
-		
- 	
  	button:draw()
 	text:draw()
 	compass:draw()
-
 
 	
 	-- FPS
@@ -161,18 +158,31 @@ function love.draw()
 	end
 end
 
+function toggleNightMode()
+	if settings.nightMode then
+		settings.nightMode = false
+		widgets.compassWidget:setFontColor(ColorFromRGBA(255, 255, 255)) -- TODO
+	else
+		settings.nightMode = true
+		widgets.compassWidget:setFontColor(ColorFromRGBA(255, 0, 0)) -- TODO
+	end
+	
+	setImages()
+
+	widgets.compassWidget:setImages(compassBackgroundImage, compassImage)
+	widgets.buttonNightModeWidget:setImages(buttonNightModeImage, buttonNightModeImage)
+end
+
 function setImages()
 	if settings.nightMode then
-		menuButtonImageNormal = love.graphics.newImage("assets/images/menu_button_simple_orange.png")
-		menuButtonImageHover = love.graphics.newImage("assets/images/menu_button_simple_orange.png")
+		buttonNightModeImage = love.graphics.newImage("assets/images/night_mode_button_enabled.png")
 		
-		compassBackgroundImage = love.graphics.newImage("assets/images/compass_background_orange.png")
-		compassImage = love.graphics.newImage("assets/images/compass_orange.png")
+		compassBackgroundImage = love.graphics.newImage("assets/images/compass_background_comet_night_mode.png")
+		compassImage = love.graphics.newImage("assets/images/compass_comet_night_mode.png")
 	else
-		menuButtonImageNormal = love.graphics.newImage("assets/images/menu_button_simple_orange.png")
-		menuButtonImageHover = love.graphics.newImage("assets/images/menu_button_simple_orange.png")
+		buttonNightModeImage = love.graphics.newImage("assets/images/night_mode_button_disabled.png")
 		
-		compassBackgroundImage = love.graphics.newImage("assets/images/compass_background_orange.png")
-		compassImage = love.graphics.newImage("assets/images/compass_orange.png")
+		compassBackgroundImage = love.graphics.newImage("assets/images/compass_background_comet.png")
+		compassImage = love.graphics.newImage("assets/images/compass_comet.png")
 	end
 end

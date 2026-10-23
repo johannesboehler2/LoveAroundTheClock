@@ -33,8 +33,18 @@ function button_module:new(x, y, scale, imgNormal, imgHover, funcClick, funcHove
 	
 	newButton.hover = false
 	newButton.hoverOpacity = 0
+	
+	
+	function newButton:setImages(imgNormal, imgHover)
+		self.imgNormal = imgNormal
+		self.imgHover = imgHover
+	end
+
 
 	table.insert(buttons, newButton)
+	
+	
+	return newButton
 end
 
 

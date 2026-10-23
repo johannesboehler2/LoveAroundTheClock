@@ -5,7 +5,7 @@ local compassModule = {} -- Here we store all the functions
 local compassList = {} -- Here we store all the new buttons
 
 
-function compassModule:new(xCenter, yCenter, imgCompassBackground, imgCompass, fontFamily, fontSize, scale)
+function compassModule:new(xCenter, yCenter, imgCompassBackground, imgCompass, fontFamily, fontSize, fontColor, scale)
 	newCompass = {}
 	newCompass.xCenter = xCenter
 	newCompass.yCenter = yCenter
@@ -14,6 +14,7 @@ function compassModule:new(xCenter, yCenter, imgCompassBackground, imgCompass, f
 	newCompass.imgCompass = imgCompass
 	newCompass.fontFamily = fontFamily
 	newCompass.fontSize = fontSize
+	newCompass.fontColor = fontColor
 	newCompass.scale = scale
 	newCompass.finalScale = scale
 	newCompass.font = love.graphics.newFont(
@@ -31,6 +32,10 @@ function compassModule:new(xCenter, yCenter, imgCompassBackground, imgCompass, f
 			self.fontFamily,
 			self.fontSize * self.scale
 		)
+	end
+	
+	function newCompass:setFontColor(fontColor)
+		self.fontColor = fontColor
 	end
 	
 	function newCompass:setScale(scale)
@@ -112,12 +117,8 @@ function compassModule:draw() -- Put this in love.draw()
 		
 		fontHeight = love.graphics:getFont():getHeight()
 		fontWidth = love.graphics:getFont():getWidth(compassDegreeRounded)
-
 		
-		
-		--Can I change the font size -- TODO scale with the compass
-		
-		love.graphics.setColor(1, 1, 1, 1)
+		love.graphics.setColor(compassElement.fontColor)
 		love.graphics.print(
 			compassDegreeRounded,
 			(13) * compassElement.scale,
