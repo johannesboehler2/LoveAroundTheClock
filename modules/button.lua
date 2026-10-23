@@ -13,7 +13,7 @@ local buttons = {} -- Here we store all the new buttons
 
 function button_module:new(x, y, scale, imgNormal, imgHover, funcClick, funcHover, text, textColor, textX, textY, center)
 	-- Put this in love.load()
-	newButton = {} -- We create a table and we create inside of it all the features we want for the button
+	newButton = {}
 	newButton.x = x
 	newButton.y = y
 	newButton.scale = scale
@@ -29,7 +29,7 @@ function button_module:new(x, y, scale, imgNormal, imgHover, funcClick, funcHove
 	newButton.textColor = textColor or {1, 1, 1}
 	newButton.textX = textX or 12
 	newButton.textY = textY or 8
-	newButton.center = center or false
+	newButton.center = center or false -- TODO
 	
 	newButton.hover = false
 	newButton.hoverOpacity = 0
@@ -83,10 +83,12 @@ function button_module:update(dt) -- Put this in love.update()
 end
 
 function button_module:draw() -- Put this in love.draw()
-	local r,g,b,a = love.graphics.getColor()
+	local r, g, b, a = love.graphics.getColor()
 
-	for i,v in ipairs(buttons) do
-		if v.center == true then -- if the center option is set on "true" then we center the button AND the text :D
+
+	-- TODO rename from v to buttonElement
+	for i, v in ipairs(buttons) do
+		if v.center == true then
 			--TODO: implement
 		else
 		    	love.graphics.setColor(1,1,1)
@@ -140,9 +142,9 @@ function button_module:draw() -- Put this in love.draw()
 				love.graphics.print(v.text, v.x + v.textX, v.y + v.textY)	
 			end
 		end
-
-		love.graphics.setColor(r,g,b,a) -- We reset the color to the state before we draw the buttons
 	end
+	
+	love.graphics.setColor(r, g, b, a) -- We reset the color to the state before we draw the buttons
 end
 
 function button_module:delete(btn)

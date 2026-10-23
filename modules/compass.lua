@@ -2,7 +2,7 @@
 
 local compassModule = {} -- Here we store all the functions
 
-local compassList = {} -- Here we store all the new buttons
+local compassList = {} -- Here we store all the new compass
 
 
 function compassModule:new(xCenter, yCenter, imgCompassBackground, imgCompass, fontFamily, fontSize, fontColor, scale)
@@ -21,6 +21,7 @@ function compassModule:new(xCenter, yCenter, imgCompassBackground, imgCompass, f
 		newCompass.fontFamily,
 		newCompass.fontSize * newCompass.scale
 	)
+	newCompass.dummyMode = true
 	
 	
 	function newCompass:setDegree(degree)
@@ -59,10 +60,12 @@ end
 
 function compassModule:update(dt) -- Put this in love.update()
 	for i, compassElement in ipairs(compassList) do
-		-- TODO get real data at this point!
-	
-		-- TODO Remove after we get real data
- 		compassElement.degree = compassElement.degree + 5 * dt -- 10 ° / sek
+		if compassElement.dummyMode then
+			compassElement.degree = compassElement.degree + 5 * dt -- 5 ° / sek
+		else
+			-- TODO Get real data at this point!
+		end
+ 		
  		
  		if compassElement.degree >= 359.5 then
  			if compassElement.degree > 359.5 and compassElement.degree < 360 then
@@ -75,9 +78,9 @@ function compassModule:update(dt) -- Put this in love.update()
 end
 
 function compassModule:draw() -- Put this in love.draw()
-	local r,g,b,a = love.graphics.getColor()
+	local r, g, b, a = love.graphics.getColor()
 
-	for i,compassElement in ipairs(compassList) do
+	for i, compassElement in ipairs(compassList) do
 	 	love.graphics.setColor(1, 1, 1, 1)
 	 	
 	 	
@@ -103,7 +106,7 @@ function compassModule:draw() -- Put this in love.draw()
 	 		compassElement.imgCompass,
 	 		compassElement.xCenter,
 	 		compassElement.yCenter,
-	 		-(compassElement.degree / 360 * math.pi * 2), -- TODO
+	 		-(compassElement.degree / 360 * math.pi * 2),
 	 		0.5 * compassElement.scale,
 	 		0.5 * compassElement.scale,
 	 		compassElement.imgCompass:getWidth() / 2,
@@ -113,7 +116,7 @@ function compassModule:draw() -- Put this in love.draw()
 		
 		local compassDegreeRounded = round(compassElement.degree) .. "°"
 		
-		love.graphics.setFont(compassElement.font) -- TODO
+		love.graphics.setFont(compassElement.font)
 		
 		fontHeight = love.graphics:getFont():getHeight()
 		fontWidth = love.graphics:getFont():getWidth(compassDegreeRounded)
@@ -125,6 +128,8 @@ function compassModule:draw() -- Put this in love.draw()
 			compassElement.yCenter - 268 * compassElement.scale
 		)
 	end
+	
+	love.graphics.setColor(r, g, b, a) -- We reset the color to the state before we draw the compass
 end
 
 
