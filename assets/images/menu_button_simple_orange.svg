@@ -9,7 +9,7 @@
    id="svg1"
    inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
    sodipodi:docname="menu_button_simple_orange.svg"
-   inkscape:export-filename="/home/johannes/night_mode_button_disabled.png"
+   inkscape:export-filename="/home/johannes/night_mode_button_enabled.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xml:space="preserve"
@@ -28,7 +28,7 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      inkscape:zoom="5.6568542"
-     inkscape:cx="20.417708"
+     inkscape:cx="20.32932"
      inkscape:cy="84.941203"
      inkscape:window-width="1920"
      inkscape:window-height="936"
@@ -111,12 +111,17 @@
        id="path1"
        cx="15.874999"
        cy="15.874999"
+       r="14.552082" /><circle
+       style="display:inline;fill:#141414;fill-opacity:1;stroke:#800000;stroke-width:0.529167;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="path1-9"
+       cx="15.874999"
+       cy="15.874999"
        r="14.552082" /><path
        d="M 24.63468,18.490081 A 8.9958324,8.9958324 0 0 1 21.458647,19.069374 8.9958324,8.9958324 0 0 1 12.462815,10.07354 8.9958324,8.9958324 0 0 1 12.860723,7.4282228 9.0752077,9.0752077 0 0 0 6.8404186,15.973956 9.0752077,9.0752077 0 0 0 15.915833,25.048853 9.0752077,9.0752077 0 0 0 24.63468,18.490081 Z"
-       style="display:inline;fill:#fa640e;stroke-width:0.538642;stroke-opacity:0.497001;paint-order:markers fill stroke"
+       style="display:none;fill:#fa640e;stroke-width:0.538642;stroke-opacity:0.497001;paint-order:markers fill stroke"
        id="path9" /><g
        id="g12"
-       style="display:none;fill:#ff0000;fill-opacity:1"><rect
+       style="display:inline;fill:#ff0000;fill-opacity:1"><rect
          style="fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.613061;stroke-opacity:0.497001;paint-order:markers fill stroke"
          id="rect10"
          width="2.8764877"
